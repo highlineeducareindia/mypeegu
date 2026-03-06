@@ -118,7 +118,7 @@ export default function GallerySection() {
         
         {/* Mobile Title */}
         <div className={`flex flex-col items-center mb-10 md:hidden text-reveal ${isVisible ? "animate-in" : ""}`} style={{ transitionDelay: '0.2s' }}>
-          <h2 className="text-3xl font-black text-gray-900 leading-tight text-center">
+          <h2 className="text-2xl font-black text-gray-900 leading-tight text-center">
             Keeping teachers, <span className="text-[#0066cc]">families,</span> and <span className="text-[#FEBF48]">kids</span> connected
           </h2>
         </div>
@@ -141,8 +141,8 @@ export default function GallerySection() {
           {/* Column 3 - Center (Image + Text) */}
           <div className={`hidden md:flex flex-col items-center gap-6 text-reveal ${isVisible ? "animate-in" : ""}`} style={{ transitionDelay: '0.5s' }}>
             <ImgCard isVisible={isVisible} delay="0.5s" rotate={-2} className="w-full h-56" src={getImgSrc(4)} alt={getImgAlt(4)} />
-            <h2 className="text-2xl lg:text-4xl font-black text-gray-900 leading-tight text-center">
-              Keeping teachers, <span className="text-[#0066cc]">families,</span> and <span className="text-[#FEBF48]">kids</span> connected
+            <h2 className="text-2xl lg:text-3xl font-black text-gray-900 leading-tight text-center">
+              Keeping <span className="text-red-500">teachers,</span> <span className="text-[#0066cc]">families,</span> and <span className="text-[#FEBF48]">kids</span> connected
             </h2>
           </div>
 

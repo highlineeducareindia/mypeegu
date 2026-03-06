@@ -34,7 +34,7 @@ const HeroSection = () => {
 
   return (
     <div className="bg-[#fcfdfe] overflow-x-hidden">
-      <section className="relative w-full min-h-[85vh] flex items-center justify-center px-4 py-10 md:py-10">
+      <section className="relative w-full min-h-[85vh] flex items-center justify-center px-4 py-10 md:py-16">
         
         {/* Background Decorative Stars */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
