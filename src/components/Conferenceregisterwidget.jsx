@@ -1,10 +1,11 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, QrCode } from "lucide-react";
 import logo from "../assets/logo.png";
 
-const REGISTRATION_FORM_URL = "https://opserv.in/mypeegu-form/index1.html";
+// Pura link (Absolute URL) use karein yahan
+const REGISTRATION_FORM_URL = "https://mypeegu.com/registration"; 
+
 const REGISTRATION_QR_IMAGE = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=10&data=${encodeURIComponent(
   REGISTRATION_FORM_URL
 )}`;

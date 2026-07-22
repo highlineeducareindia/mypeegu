@@ -8,6 +8,7 @@ import Parents from "./pages/solution/Parents";
 import OurApproach from "./pages/ourApproach/OurApproach";
 import InstitutionalArchitecture from "./pages/institutional/InstitutionalArchitecture";
 import Careers from "./pages/career/career";
+import MyPeeguActivationForm from "./pages/form/MyPeeguActivationForm";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,8 @@ export const router = createBrowserRouter([
       { path: "institutional-architecture", element: <InstitutionalArchitecture /> },
       { path: "careers-community", element: <Careers /> },
       { path: "contact", element: <Contact /> },
+     
     ],
   },
+  { path: "/registration", element: <MyPeeguActivationForm /> }
 ]);
