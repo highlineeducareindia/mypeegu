@@ -21,11 +21,7 @@ const FeaturedOn = () => {
         setLoading(false);
       });
   }, []);
-
-  // Agar data load ho raha hai ya koi partner nahi hai toh kuch render mat karo
   if (loading || partners.length === 0) return null; 
-
-  // Infinite loop animation ke liye array ko duplicate kar rahe hain
   const duplicatedPartners = [...partners, ...partners];
 
   return (
@@ -55,17 +51,16 @@ const FeaturedOn = () => {
           {/* Scrolling Wrapper */}
           <motion.div 
             className="flex gap-10 md:gap-16 items-center whitespace-nowrap px-8"
-            // x: ["0%", "-50%"] ensure karta hai ki duplicate hone par seamless loop bane
             animate={{ x: ["0%", "-50%"] }} 
             transition={{ 
-              duration: partners.length * 4, // Partner count ke hisaab se speed adjust (dynamic duration)
+              duration: partners.length * 4,
               ease: "linear", 
               repeat: Infinity 
             }}
           >
             {duplicatedPartners.map((partner, index) => (
               <div 
-                key={`${partner.id}-${index}`} // Unique key using id and index combined
+                key={`${partner.id}-${index}`} 
                 className=" flex-shrink-0 w-40 md:w-60 h-32 md:h-44 flex items-center justify-center p-4 bg-white border border-gray-200 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-md"
               >
                 <img 

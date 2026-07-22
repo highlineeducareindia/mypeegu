@@ -7,7 +7,8 @@ import {
   FaLinkedinIn, 
   FaFacebookF, 
   FaTwitter,
-  FaChevronRight
+  FaChevronRight,
+  FaWhatsapp
 } from 'react-icons/fa';
 import logo from "../assets/logo.png"; 
 import { API_ENDPOINTS } from "../config/api";
@@ -38,28 +39,29 @@ const Footer = () => {
     {
       title: "Student Development",
       links: [
-        { name: "Emotional Foundations", path: "/solution/student-development" },
-        { name: "Regulation & Relationships", path: "/solution/student-development" },
-        { name: "Reflection & Decision Making", path: "/solution/student-development" },
-        { name: "Purpose & Leadership", path: "/solution/student-development" }
+        // Added Hashes (#) to target specific sections on the page
+        { name: "Emotional Foundations", path: "/solution/student-development#workshop-1" },
+        { name: "Regulation & Relationships", path: "/solution/student-development#workshop-2" },
+        { name: "Reflection & Decision Making", path: "/solution/student-development#workshop-3" },
+        { name: "Purpose & Leadership", path: "/solution/student-development#workshop-4" }
       ]
     },
     {
       title: "Educator Excellence",
       links: [
-        { name: "Child First Approach", path: "/solution/educator-excellence" },
-        { name: "Classroom Management", path: "/solution/educator-excellence" },
-        { name: "Teacher Mindshift", path: "/solution/educator-excellence" },
-        { name: "Trauma-Informed Classrooms", path: "/solution/educator-excellence" }
+        { name: "Child First Approach", path: "/solution/educator-excellence#workshop-1" },
+        { name: "Classroom Management", path: "/solution/educator-excellence#workshop-2" },
+        { name: "Teacher Mindshift", path: "/solution/educator-excellence#workshop-3" },
+        { name: "Trauma-Informed Classrooms", path: "/solution/educator-excellence#workshop-5" }
       ]
     },
     {
       title: "Parent Partnership",
       links: [
-        { name: "Conscious Parenting", path: "/solution/parent-partnership" },
-        { name: "Setting Boundaries", path: "/solution/parent-partnership" },
-        { name: "Emotional Coaching", path: "/solution/parent-partnership" },
-        { name: "Strength-Based Parenting", path: "/solution/parent-partnership" }
+        { name: "Conscious Parenting", path: "/solution/parent-partnership#workshop-1" },
+        { name: "Setting Boundaries", path: "/solution/parent-partnership#workshop-2" },
+        { name: "Emotional Coaching", path: "/solution/parent-partnership#workshop-3" },
+        { name: "Strength-Based Parenting", path: "/solution/parent-partnership#workshop-5" }
       ]
     }
   ];
@@ -85,7 +87,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Links Columns - Alignment Fix Here */}
+          {/* Links Columns */}
           {footerSections.map((section) => (
             <div key={section.title} className="space-y-6">
               <h4 className="text-slate-900 text-xs font-bold uppercase tracking-[0.12em]">
@@ -98,11 +100,9 @@ const Footer = () => {
                       to={link.path}
                       className="relative text-slate-500 hover:text-[#0066CC] text-[14px] font-semibold transition-all duration-300 flex items-center group overflow-visible"
                     >
-                      {/* Icon Container: Ye absolute hai taaki alignment kharab na kare */}
                       <span className="absolute -left-4 opacity-0 group-hover:left-0 group-hover:opacity-100 transition-all duration-300 text-[#0066CC]">
                         <FaChevronRight size={8} />
                       </span>
-                      {/* Text: Ye hover par icon ke liye jagah banayega */}
                       <span className="group-hover:translate-x-4 transition-transform duration-300">
                         {link.name}
                       </span>
@@ -120,21 +120,26 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex flex-wrap justify-center md:justify-start gap-10">
             <div className="flex items-center gap-4 group">
-              <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-[#0066CC] group-hover:bg-[#0066CC] group-hover:text-white transition-all duration-300">
-                <FaPhoneAlt size={14} />
-              </div>
-              <div>
-                {/* <span className="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">Phone</span> */}
-                <span className="block text-slate-800 font-bold text-sm tracking-tight">{settings?.phone || "+91 9035524865"}</span>
-              </div>
-            </div>
+  <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-[#25D366] group-hover:bg-[#25D366] group-hover:text-white transition-all duration-300">
+    <FaWhatsapp size={16} />
+  </div>
+  <div>
+    <a
+      href={`https://wa.me/${(settings?.phone || "919035524865").replace(/\D/g, "")}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block text-slate-800 font-bold text-sm tracking-tight hover:text-[#25D366]"
+    >
+      {settings?.phone || "+91 9035524865"}
+    </a>
+  </div>
+</div>
 
             <div className="flex items-center gap-4 group">
               <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-[#E13928] group-hover:bg-[#E13928] group-hover:text-white transition-all duration-300">
                 <FaEnvelope size={14} />
               </div>
               <div>
-                {/* <span className="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">Email Support</span> */}
                 <span className="block text-slate-800 font-bold text-sm tracking-tight">{settings?.email || "hi@mypeegu.in"}</span>
               </div>
             </div>

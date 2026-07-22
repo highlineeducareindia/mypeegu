@@ -1,144 +1,415 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom"; // Auto-Scroll ke liye import
 import { motion } from "framer-motion";
-import { GraduationCap, HeartHandshake, Microscope, Users, Star } from "lucide-react";
-import { API_ENDPOINTS } from "../../config/api";
+import { CheckCircle2 } from "lucide-react";
 
-import FlowLayout from "../../components/FlowLayout";
 import HeroSection from "../../components/HeroSection";
 import CTASection from "../../components/CTASection";
 
-// Map for Dynamic Icons
-const LucideMap = {
-  GraduationCap: GraduationCap,
-  HeartHandshake: HeartHandshake,
-  Microscope: Microscope,
-  Users: Users,
-};
+// Images Import
+import phase1 from "../../assets/teacher/t5.jpg";
+import phase2 from "../../assets/teacher/t1.jpg";
+import phase3 from "../../assets/teacher/t2.jpeg";
+import phase4 from "../../assets/teacher/t3.jpeg";
+import phase5 from "../../assets/teacher/t4.jpeg";
+import OnPage from "../../components/OnPage";
 
 const Teachers = () => {
-  const [pageData, setPageData] = useState(null);
-  const [methodologies, setMethodologies] = useState([]);
-  const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
-    fetch(API_ENDPOINTS.TEACHERS)
-      .then(res => res.json())
-      .then(result => {
-        if(result.success) {
-          setPageData(result.config);
-          
-          // Map DB fields to FlowLayout required props
-          const formattedMethodologies = result.methodologies.map(m => ({
-            title: m.title,
-            desc: m.description,
-            image: m.image_url,
-            tag: m.tag,
-            color: m.color_hex
-          }));
-          setMethodologies(formattedMethodologies);
-          setServices(result.services);
-        }
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Error fetching Teachers data:", err);
-        setLoading(false);
-      });
-  }, []);
+    if (location.hash) {
+      const id = location.hash.replace("#", "");
+      const element = document.getElementById(id);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 100);
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
 
-  if (loading || !pageData) {
-    return <div className="min-h-screen flex items-center justify-center bg-white">Loading Teacher Pathways...</div>;
-  }
+  const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { duration: 0.5 },
+  };
+
+  // 100% EXACT CLIENT CONTENT
+  const workshops = [
+    {
+      id: "1",
+      title: "Child First Approach",
+      subtitle: "Understanding the Child Beyond the Classroom Role",
+      desc1:
+        "The Child First Approach workshop encourages educators to view students beyond their academic performance or behavioural labels. It focuses on understanding the developmental, emotional, and social factors that influence a child’s behaviour and learning.",
+      desc2:
+        "Teachers often encounter behaviours such as disengagement, resistance, or emotional outbursts without having the opportunity to explore the underlying causes. This workshop helps educators move from a <strong>reaction-based approach to a relationship-based approach</strong>.",
+      themes: [
+        "Understanding the emotional needs of children in learning environments",
+        "Recognising behaviour as a form of communication",
+        "Building trust and psychological safety in classrooms",
+        "Developing empathy without compromising classroom structure",
+        "Creating stronger teacher-student connections",
+      ],
+      experience:
+        "Through reflective activities and case-based discussions, teachers explore how small shifts in language, expectations, and classroom interactions can significantly influence student behaviour and engagement.",
+      experienceOutcomesIntro:
+        "Educators leave the session with practical strategies for:",
+      experienceOutcomes: [
+        "strengthening student relationships",
+        "responding constructively to challenging behaviour",
+        "fostering inclusive and supportive classroom environments.",
+      ],
+      boldEnding: "",
+      image: phase1,
+    },
+    {
+      id: "2",
+      title: "Reinventing Classroom Management",
+      subtitle: "Moving Beyond Control Toward Engagement",
+      desc1:
+        "Classroom management is often perceived as maintaining discipline and order. However, sustainable classroom management requires understanding the psychological dynamics that shape student behaviour.",
+      desc2:
+        "This workshop helps teachers re-examine traditional disciplinary models and explore approaches that promote <strong>engagement, accountability, and mutual respect</strong>.",
+      themes: [
+        "Understanding the roots of classroom disruptions",
+        "Preventive classroom structures that reduce behavioural escalation",
+        "Setting expectations that promote student ownership",
+        "Balancing authority with approachability",
+        "Building classroom cultures where students feel respected and responsible",
+      ],
+      experience:
+        "Teachers reflect on common classroom challenges and analyse how different responses influence student behaviour. Through interactive discussions and real classroom scenarios, educators learn strategies for:",
+      experienceOutcomes: [
+        "preventing behavioural disruptions before they escalate",
+        "fostering collaborative classroom environments",
+        "creating predictable routines that support learning.",
+      ],
+      boldEnding:
+        "The session encourages teachers to move from <strong>discipline-driven classrooms to relationship-driven learning spaces</strong>.",
+      image: phase2,
+    },
+    {
+      id: "3",
+      title: "Mindshift & Internal Locus of Control",
+      subtitle: "Strengthening Teacher Mindset and Professional Resilience",
+      desc1:
+        "Teaching can be emotionally demanding. External pressures, diverse classroom needs, and time constraints often make educators feel that many factors are beyond their control.",
+      desc2:
+        "The Mindshift & Internal Locus of Control workshop helps teachers reflect on their personal mindset and recognise the areas where they can exercise influence and agency.",
+      themes: [
+        "Understanding internal vs external locus of control",
+        "Recognising thought patterns that influence professional stress",
+        "Reframing challenges as opportunities for growth",
+        "Strengthening resilience and emotional regulation",
+        "Building collaborative mindsets within teaching teams",
+      ],
+      experience:
+        "Teachers participate in guided reflections that help them identify personal triggers, beliefs, and patterns that may affect their interactions with students and colleagues. By shifting focus from external constraints to internal strengths, educators develop strategies for:",
+      experienceOutcomes: [
+        "maintaining emotional balance in challenging situations",
+        "approaching classroom difficulties with clarity and confidence",
+        "fostering supportive peer collaboration.",
+      ],
+      boldEnding:
+        "The workshop helps teachers rediscover their <strong>sense of purpose, control, and professional fulfilment</strong>.",
+      image: phase3,
+    },
+    {
+      id: "4",
+      title: "Compassionate Curiosity",
+      subtitle:
+        "Understanding Behaviour Through Inquiry Rather Than Assumption",
+      desc1:
+        "Students often display behaviours that teachers may initially interpret as defiance, indifference, or lack of discipline. However, behaviour frequently reflects underlying emotional or social challenges.",
+      desc2:
+        "The <em>Compassionate Curiosity</em> workshop introduces educators to a mindset that replaces quick judgments with thoughtful inquiry.",
+      themes: [
+        "Understanding behaviour through a psychological lens",
+        "Asking reflective questions before responding to student actions",
+        "Building emotional awareness in classroom interactions",
+        "Supporting students without enabling disruptive behaviour",
+        "Strengthening communication and listening skills",
+      ],
+      experience:
+        "Teachers examine real classroom scenarios and practice reframing their responses through curiosity and empathy. Through guided discussions and role-based exercises, educators learn how to:",
+      experienceOutcomes: [
+        "pause before reacting to difficult behaviour",
+        "explore the underlying context behind student responses",
+        "create opportunities for meaningful conversations with students.",
+      ],
+      boldEnding:
+        "This approach helps teachers cultivate classrooms where <strong>students feel understood while still being guided toward accountability and growth</strong>.",
+      image: phase4,
+    },
+    {
+      id: "5",
+      title: "Trauma-Informed Classrooms",
+      subtitle: "Creating Emotionally Safe Learning Environments",
+      desc1:
+        "Many students bring experiences from home, community, or personal challenges that influence their emotional responses and behaviour in school.",
+      desc2:
+        "A trauma-informed classroom recognises that some behaviours may stem from emotional distress rather than intentional disruption. This workshop introduces teachers to the principles of <strong>trauma-informed educational practice</strong>.",
+      themes: [
+        "Understanding how stress and trauma affect learning and behaviour",
+        "Recognising signs of emotional distress in students",
+        "Responding to difficult situations with sensitivity and stability",
+        "Building classroom routines that promote emotional safety",
+        "Supporting students while maintaining classroom boundaries",
+      ],
+      experience:
+        "Teachers learn how to identify behavioural patterns that may signal deeper challenges and how to respond in ways that support both the individual student and the classroom environment. Educators gain practical strategies for:",
+      experienceOutcomes: [
+        "creating predictable and safe classroom structures",
+        "managing emotional escalations calmly",
+        "working collaboratively with counsellors and school support systems.",
+      ],
+      boldEnding:
+        "The focus remains on helping teachers maintain <strong>compassion without compromising structure or learning expectations</strong>. These workshops help educators:",
+      finalBullets: [
+        "Build stronger relationships with students",
+        "Understand behavioural triggers",
+        "Respond to emotional challenges effectively",
+        "Create psychologically safe learning environments",
+      ],
+      image: phase5,
+    },
+  ];
 
   return (
-    <div className="bg-white font-sans selection:bg-blue-100 overflow-x-hidden">
-      
-      {/* 1. HERO SECTION */}
-      <HeroSection
-        badge={pageData.hero_badge}
-        title={pageData.hero_title}
-        highlight={pageData.hero_highlight}
-        description={pageData.hero_desc}
-        buttonText={pageData.hero_btn}
-        image={pageData.hero_image}
+    <div className="bg-white font-sans selection:bg-blue-100 overflow-x-clip">
+      <OnPage
+        title="Teacher Development"
+        description="Explore MyPeegu’s psycho-educational workshops for teachers focused on classroom management, emotional intelligence, and student engagement."
+        keywords="teacher training, classroom management, emotional intelligence for teachers, educator workshops, MyPeegu teachers"
+        url="https://www.mypeegu.com/solution/educator-excellence"
+        image="../../assets/teacher/t4.jpeg"
       />
 
-      {/* 2. THE FLOW LAYOUT */}
-      {methodologies.length > 0 && <FlowLayout data={methodologies} />}
+      {/* 1. HERO SECTION */}
+      <HeroSection
+        badge="EDUCATOR EXCELLENCE"
+        title="Psycho-Educational Workshops"
+        highlight="for Teachers"
+        description="Teachers play a pivotal role in shaping the emotional climate of a school. Their interactions, responses, and expectations influence not only academic outcomes but also students’ sense of belonging, safety, and self-confidence."
+        buttonText="Explore Our Workshops"
+        image={phase1}
+      />
 
-      {/* 3. SERVICE SECTION */}
-      <section className="bg-[#F0F7FF] py-10 px-6 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto relative z-10 rounded-sm">
-          <div className="flex flex-col items-center lg:items-start mb-10">
-            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="mb-4">
-              <h2 className="text-2xl md:text-3xl font-black text-[#E53935] tracking-tight">{pageData.services_heading}</h2>
-              <div className="h-1 w-26 bg-[#E53935] rounded-full mt-2" />
-            </motion.div>
-            <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-xl md:text-xl font-black text-slate-800 text-center lg:text-left leading-tight mt-2">
-              {pageData.services_sub}
-            </motion.p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {services.map((srv, idx) => {
-              const IconComp = LucideMap[srv.icon_name] || Star;
-              return (
-                <ServiceColumn
-                  key={srv.id}
-                  icon={IconComp}
-                  delay={0.1 * (idx + 1)}
-                  title={srv.title}
-                  items={srv.items || []}
-                />
-              );
-            })}
-          </div>
+      {/* 2. INTRODUCTION SECTION */}
+      <section className="py-12 md:py-16 bg-[#F8FAFC] border-b border-slate-200">
+        <div className="max-w-5xl mx-auto px-6">
+          <motion.div
+            {...fadeInUp}
+            className="text-slate-600 text-[16px] leading-snug space-y-4 font-medium"
+          >
+            <p>
+              MyPeegu’s educator workshops are designed as{" "}
+              <strong className="text-slate-800">
+                psycho-educational learning experiences
+              </strong>{" "}
+              that help teachers better understand student behaviour, emotional
+              development, and classroom dynamics.
+            </p>
+            <p>
+              Rather than providing theoretical lectures, our sessions combine:
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 mt-1">
+              <ListItem text="Psychological insights" />
+              <ListItem text="Practical classroom strategies" />
+              <ListItem text="Reflective exercises" />
+              <ListItem text="Scenario-based discussions" />
+              <ListItem text="Collaborative problem solving" />
+            </div>
+            <p className="mt-3">
+              Each workshop is designed to help teachers{" "}
+              <strong className="text-slate-800">
+                translate psychological understanding into everyday classroom
+                practice
+              </strong>
+              , strengthening both educator confidence and student engagement.
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      {/* 4. CONTENT BLOCKS */}
-      <section className="bg-white py-16 px-6 overflow-hidden">
-        <div className="max-w-7xl mx-auto space-y-10">
-          
-          {/* BLOCK 1 */}
-          <div className="flex flex-col lg:flex-row items-center gap-12">
-            <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="lg:w-1/2 space-y-6">
-              <h2 className="text-3xl md:text-3xl font-bold leading-tight">{pageData.block1_title}</h2>
-              <div className="space-y-4 text-slate-500 text-md leading-relaxed font-medium" dangerouslySetInnerHTML={{ __html: pageData.block1_desc }} />
-            </motion.div>
-            <motion.div className="lg:w-1/2" initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}>
-              <img src={pageData.block1_image} alt="R&D" className="rounded-[2rem] shadow-lg w-full h-[350px] object-cover" />
-            </motion.div>
-          </div>
+      {/* 3. ZIG-ZAG WORKSHOPS SECTION */}
+      <section className="py-10 md:py-10 bg-white font-medium">
+        <div className="max-w-7xl mx-auto px-6 space-y-16 md:space-y-20">
+          {workshops.map((workshop, index) => {
+            const isReverse = index % 2 !== 0;
 
-          {/* IMPACT BAR */}
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-3 gap-6 py-12 border-y border-slate-100">
-            <div className="flex flex-col items-center text-center p-4">
-              <div className="w-12 h-12 bg-[#E53935]/10 rounded-full flex items-center justify-center mb-4 text-[#E53935]"><GraduationCap size={28} /></div>
-              <p className="font-bold text-slate-800">Empowering teachers to become facilitators</p>
-            </div>
-            <div className="flex flex-col items-center text-center p-4 border-y md:border-y-0 md:border-x border-slate-100">
-              <div className="w-12 h-12 bg-[#1E88E5]/10 rounded-full flex items-center justify-center mb-4 text-[#1E88E5]"><HeartHandshake size={28} /></div>
-              <p className="font-bold text-slate-800">Parents become partners in education</p>
-            </div>
-            <div className="flex flex-col items-center text-center p-4">
-              <div className="w-12 h-12 bg-[#FFB300]/10 rounded-full flex items-center justify-center mb-4 text-[#FFB300]"><Users size={28} /></div>
-              <p className="font-bold text-slate-800">Helping Students tap into their Potential</p>
+            return (
+              <div
+                key={workshop.id}
+                id={`workshop-${workshop.id}`} // <--- Auto-Scroll ID assigned here
+                className={`flex flex-col gap-8 lg:gap-12 items-center scroll-mt-24 ${
+                  isReverse ? "lg:flex-row-reverse" : "lg:flex-row"
+                }`}
+              >
+                {/* IMAGE COLUMN */}
+                <div className="w-full lg:w-5/12 flex justify-center items-center">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    className="relative w-full max-w-md lg:max-w-lg"
+                  >
+                    <img
+                      src={workshop.image}
+                      alt={workshop.title}
+                      loading="lazy"
+                      className="w-full aspect-[4/3] object-cover rounded-[2rem] shadow-xl border border-slate-100 relative z-10"
+                    />
+                    <div
+                      className={`absolute -inset-4 bg-blue-50/50 rounded-[3rem] -z-10 blur-xl ${isReverse ? "-right-4" : "-left-4"}`}
+                    />
+                  </motion.div>
+                </div>
+
+                {/* TEXT COLUMN */}
+                <div className="w-full lg:w-7/12 flex flex-col justify-center">
+                  <motion.div
+                    initial={{ opacity: 0, x: isReverse ? -20 : 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                  >
+                    {/* Title Area */}
+                    <div className="mb-3 border-b border-slate-100 pb-3">
+                      <h2 className="text-2xl md:text-3xl font-black text-[#1a365d] leading-tight mb-1">
+                        {workshop.title}
+                      </h2>
+                      <h3 className="text-lg font-bold text-[#0066cc]">
+                        {workshop.subtitle}
+                      </h3>
+                    </div>
+
+                    {/* Description Area */}
+                    <div className="text-slate-700 text-[16px] leading-snug space-y-2 mb-1">
+                      <p dangerouslySetInnerHTML={{ __html: workshop.desc1 }} />
+                      {workshop.desc2 && (
+                        <p
+                          dangerouslySetInnerHTML={{ __html: workshop.desc2 }}
+                        />
+                      )}
+                    </div>
+
+                    {/* Key Themes */}
+                    <div className="mb-1">
+                      <h4 className="font-bold text-slate-900 text-[17px] mb-1.5">
+                        Key Themes Explored
+                      </h4>
+                      <ul className="list-disc pl-5 space-y-1 text-slate-700 text-[16px]">
+                        {workshop.themes.map((theme, i) => (
+                          <li key={i}>{theme}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Workshop Experience */}
+                    <div>
+                      <h4 className="font-bold text-slate-900 text-[17px] mb-1.5 mt-3">
+                        Workshop Experience
+                      </h4>
+                      <div className="text-slate-700 text-[16px] leading-snug space-y-2">
+                        <p>{workshop.experience}</p>
+
+                        {workshop.experienceOutcomesIntro && (
+                          <p>{workshop.experienceOutcomesIntro}</p>
+                        )}
+
+                        <ul className="list-disc pl-5 space-y-1">
+                          {workshop.experienceOutcomes.map((outcome, i) => (
+                            <li key={i}>{outcome}</li>
+                          ))}
+                        </ul>
+
+                        {workshop.boldEnding && (
+                          <p
+                            className="mt-2 text-slate-900"
+                            dangerouslySetInnerHTML={{
+                              __html: workshop.boldEnding,
+                            }}
+                          />
+                        )}
+
+                        {workshop.finalBullets && (
+                          <ul className="list-disc pl-5 mt-1 space-y-1 font-bold text-slate-800">
+                            {workshop.finalBullets.map((bullet, i) => (
+                              <li key={i}>{bullet}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 4. WORKSHOP IMPACT & HIGHLIGHTS */}
+      <section className="py-12 md:py-16 bg-slate-50 border-t border-slate-200">
+        <div className="max-w-4xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100"
+          >
+            <h2 className="text-2xl md:text-3xl font-black text-[#1a365d] mb-5 text-center">
+              Workshop Impact
+            </h2>
+
+            <div className="text-slate-600 text-[16px] leading-snug space-y-4 text-center font-medium">
+              <p>
+                Each workshop is designed to be{" "}
+                <strong className="text-slate-800">
+                  practical, reflective, and immediately applicable to classroom
+                  contexts
+                </strong>
+                . Teachers leave with tools, insights, and strategies that can
+                be implemented within their daily interactions with students.
+              </p>
+
+              <p>
+                Across schools where these workshops have been conducted,{" "}
+                <strong className="text-slate-800">
+                  educator feedback has consistently reflected strong engagement
+                  and practical value
+                </strong>
+                .
+              </p>
+
+              <p className="text-medium text-slate-600">
+                <strong className="text-slate-800">
+                  On average, MyPeegu educator workshops have received a
+                  participant rating of 4.6 out of 5
+                </strong>
+                , highlighting their relevance, applicability, and impact on
+                classroom practice.
+              </p>
+
+              {/* Exact Yellow Highlighted Text */}
+              <div className="space-y-3 pt-3 text-left flex flex-col items-center">
+                <p className="bg-[#FFF8B0] px-4 py-2 rounded-md italic font-medium inline-block w-full sm:w-auto shadow-sm">
+                  Each module is contextualised to the school’s developmental
+                  needs, staff profile, and behavioural trends.
+                </p>
+                <p className="bg-[#FFF8B0] px-4 py-2 rounded-md italic font-medium inline-block w-full sm:w-auto shadow-sm">
+                  Additional modules are curated based on institutional
+                  requirements, leadership priorities, and emerging challenges
+                  within the school community.
+                </p>
+              </div>
             </div>
           </motion.div>
-
-          {/* BLOCK 2 */}
-          <div className="flex flex-col lg:flex-row-reverse items-center gap-12">
-            <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="lg:w-1/2 space-y-6">
-              <h2 className="text-3xl md:text-3xl font-bold leading-tight">{pageData.block2_title}</h2>
-              <div className="space-y-4 text-slate-500 text-md leading-relaxed font-medium" dangerouslySetInnerHTML={{ __html: pageData.block2_desc }} />
-            </motion.div>
-            <motion.div className="lg:w-1/2" initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }}>
-              <img src={pageData.block2_image} alt="Leader" className="rounded-[2rem] shadow-lg w-full h-[350px] object-cover" />
-            </motion.div>
-          </div>
-
         </div>
       </section>
 
@@ -147,30 +418,12 @@ const Teachers = () => {
   );
 };
 
-// Reusable Service Column Component
-const ServiceColumn = ({ title, items, icon: Icon, delay }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5, delay: delay }}
-    className="group flex flex-col items-center p-8 rounded-[2.5rem] bg-white shadow-xl shadow-blue-900/5 hover:shadow-2xl hover:shadow-blue-900/10 transition-all duration-300 border border-slate-50"
-  >
-    <div className="h-16 flex items-center justify-center mb-6">
-      <h3 className="text-lg font-bold text-[#E53935] text-center leading-snug group-hover:scale-105 transition-transform">{title}</h3>
-    </div>
-    <div className="w-24 h-24 bg-[#0066CC] rounded-full flex items-center justify-center mb-8 shadow-lg shadow-blue-200 group-hover:rotate-6 transition-all duration-300">
-      <Icon size={44} className="text-white" strokeWidth={1.5} />
-    </div>
-    <ul className="space-y-3 w-full">
-      {items.map((item, i) => (
-        <li key={i} className="flex items-start gap-2 text-slate-700 group/item cursor-default">
-          <span className="text-[#E53935] font-black text-lg leading-none group-hover/item:translate-x-1 transition-transform">»</span>
-          <span className="text-sm font-semibold group-hover/item:text-[#1E88E5] transition-colors">{item}</span>
-        </li>
-      ))}
-    </ul>
-  </motion.div>
+// Component for Intro List Items
+const ListItem = ({ text }) => (
+  <div className="flex items-start gap-3">
+    <CheckCircle2 className="text-[#0066cc] shrink-0 mt-1" size={20} />
+    <span className="text-slate-700 font-medium">{text}</span>
+  </div>
 );
 
 export default Teachers;

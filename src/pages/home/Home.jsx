@@ -1,40 +1,37 @@
 import React from "react";
 import HeroSection from "./HeroSection";
-
 import CommunitySection from "./PeeguCommunity";
-import TestimonialSection from "./TestimonialSection";
-import PrivacySection from "./PrivacySection";
 import FeaturedOn from "./FeaturedOn";
 import AwardsSection from "./Award";
 import ImpactSection from "./StatSection";
 import Cardsection from "./Cardsection";
-import GallerySection from "./GallerySection"
-import ClassDojoSections from "./Classdojosections";
-import SELJourney from "./SELJourney";
-import { Section } from "lucide-react";
-import DifferenceSection from "./Section";
-import PhilosophySection from "./PhilosophySection";
-
-
+import GallerySection from "./GallerySection";
+import CorePositioning from "./PhilosophySection";
+import CTASection from "../../components/CTASection";
+import OnPage from "../../components/OnPage";
+import Landing from "./Landing";
 
 const Home = () => {
   return (
-    <div className=" font-manrope min-h-screen bg-white overflow-hidden">
+    <div className="min-h-screen bg-white overflow-hidden ">
+      <OnPage
+        title="Home"
+        description="MyPeegu helps schools build student wellbeing through structured programs and tools."
+        keywords="student wellbeing, schools, education, MyPeegu"
+        url="https://www.mypeegu.com/"
+        image="../../assets/logo.png"
+      />
       {/* Hero Section with Interactive Cards */}
       <HeroSection />
       <ImpactSection />
-      <GallerySection/>
-         <ClassDojoSections  />
-       <Cardsection/>
-        <FeaturedOn />
-  {/* <SELJourney /> */}
-       <AwardsSection />
-       <PhilosophySection/>
-        <DifferenceSection />
+      <GallerySection />
+      <Landing />
+      <Cardsection />
+      <FeaturedOn />
+      <AwardsSection />
+      <CorePositioning />
       <CommunitySection />
-     
-      {/* <TestimonialSection /> */}
-      <PrivacySection />
+      <CTASection />
     </div>
   );
 };

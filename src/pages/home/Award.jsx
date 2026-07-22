@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { API_ENDPOINTS } from "../../config/api"; // Path check kar lena apne folder ke hisaab se
+import { API_ENDPOINTS } from "../../config/api"; 
 
 export default function AwardsSection() {
   const [awards, setAwards] = useState([]);
@@ -8,7 +8,6 @@ export default function AwardsSection() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // API se data fetch karna
     fetch(API_ENDPOINTS.AWARDS)
       .then((response) => response.json())
       .then((result) => {
@@ -28,8 +27,7 @@ export default function AwardsSection() {
 
   return (
     <section className="bg-[#f7f9fc] py-10 px-6">
-      <div className="max-w-6xl mx-auto">
-        {/* ── Header ── */}
+      <div className="max-w-6xl mx-auto"> 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -38,19 +36,15 @@ export default function AwardsSection() {
           className="mb-10"
         >
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-8 h-[3px] rounded-full bg-[#E31E24]" />
-            <span className="text-[#E31E24] text-[11px] font-bold uppercase tracking-[0.22em] ">
+            <div className="w-8 h-[3px] rounded-full bg-[#FFB300]" />
+            <span className="text-[#FFB300] text-[11px] font-bold uppercase tracking-[0.22em] ">
               Milestones of Success
             </span>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
-            <h2 className="text-3xl sm:text-3xl md:text-5xl font-[1000] text-slate-900 tracking-tight leading-[1.1]">
+            <h2 className="text-3xl sm:text-3xl md:text-4xl font-[1000] text-[#1a365d] tracking-tight leading-[1.1]">
               Awards &amp; <span className="text-[#0066cc]">Recognition</span>
             </h2>
-            <p className="text-slate-500 max-w-sm sm:text-right">
-              Honored by leading global organizations for our unwavering
-              commitment to educational excellence.
-            </p>
           </div>
           <div className="mt-8 h-px bg-slate-200" />
         </motion.div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Heart, UserCheck } from 'lucide-react'; // UserCheck icon import kiya
+import { Heart, UserCheck } from 'lucide-react'; 
 import { API_ENDPOINTS } from "../../config/api";
 
 const CommunitySection = () => {
@@ -12,12 +12,10 @@ const CommunitySection = () => {
       .then(res => res.json())
       .then(result => {
         if(result.success) {
-          // Mapping backend fields to frontend component format
           const formattedCards = result.data.map(item => ({
             id: item.id,
             type: item.type,
             title: item.title,
-            // avatar: item.avatar_url, // Ab avatar ki zarurat nahi hai testimonials mein
             content: item.content,
             url: item.image_url,
             color: item.bg_color
@@ -34,8 +32,6 @@ const CommunitySection = () => {
 
   const InfiniteRow = ({ items, direction }) => {
     const isLeft = direction === 'left';
-    
-    // Agar data load nahi hua hai ya khali hai, toh blank space dikhao
     if (items.length === 0) return null;
 
     return (
@@ -44,7 +40,7 @@ const CommunitySection = () => {
           className="flex flex-nowrap gap-4 md:gap-6 shrink-0 px-2"
           animate={{ x: isLeft ? ["0%", "-50%"] : ["-50%", "0%"] }}
           transition={{ 
-            duration: items.length * 4, // Dynamic speed based on items
+            duration: items.length * 4, 
             repeat: Infinity, 
             ease: "linear" 
           }}
@@ -68,7 +64,7 @@ const CommunitySection = () => {
                 <div className="flex flex-col h-full justify-between">
                   <div>
                     <div className="flex items-center gap-3 mb-3 md:mb-4">
-                      {/* --- UPDATE: Image ki jagah UserCheck Icon --- */}
+          
                       <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-[#0066CC]">
                         <UserCheck size={20} className="md:size-[24px]" strokeWidth={1.5} />
                       </div>
@@ -119,7 +115,7 @@ const CommunitySection = () => {
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="text-3xl sm:text-3xl md:text-5xl font-[1000] text-slate-900 tracking-tight leading-[1.1]"
+          className="text-3xl sm:text-3xl md:text-4xl font-[1000] text-[#1a365d] tracking-tight leading-[1.1]"
         >
           Our community is our <br className="hidden sm:block" /> 
           <span className="text-[#0066CC]"> superpower</span>

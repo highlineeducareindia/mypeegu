@@ -26,23 +26,33 @@ const StarRating = () => (
   </div>
 );
 
-// ImgCard waise hi rahega, bas conditionally render hoga
-const ImgCard = ({ src, alt, rotate = 0, className = "", delay = "0s", isVisible }) => {
-  if (!src) return <div className={`w-full ${className}`}></div>; // Agar image nahi hai toh blank space chhod do
+const ImgCard = ({
+  src,
+  alt,
+  rotate = 0,
+  className = "",
+  delay = "0s",
+  isVisible,
+}) => {
+  if (!src) return <div className={`w-full ${className}`}></div>; // Agar image nahi
 
   return (
     <div
       className={`photo-item ${isVisible ? "animate-in" : ""} ${className}`}
-      style={{ 
+      style={{
         animationDelay: delay,
         "--start-rotation": `${rotate}deg`,
-        "--swing-duration": `${3 + Math.random() * 2}s`
+        "--swing-duration": `${3 + Math.random() * 2}s`,
       }}
     >
       <div className="swing-wrapper w-full h-full">
         <div className="scale-wrapper w-full h-full">
           <div className="relative w-full h-full overflow-hidden cursor-pointer rounded-[24px] md:rounded-[36px] shadow-lg">
-            <img src={src} alt={alt || "Gallery Image"} className="w-full h-full object-cover block bg-gray-100" />
+            <img
+              src={src}
+              alt={alt || "Gallery Image"}
+              className="w-full h-full object-cover block bg-gray-100"
+            />
           </div>
         </div>
       </div>
@@ -56,24 +66,21 @@ export default function GallerySection() {
 
   useEffect(() => {
     setIsVisible(true);
-    
+
     // API Call
     fetch(API_ENDPOINTS.GALLERY)
-      .then(res => res.json())
-      .then(result => {
-        if(result.success) setImages(result.data);
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.success) setImages(result.data);
       })
-      .catch(err => console.error("Error fetching gallery:", err));
+      .catch((err) => console.error("Error fetching gallery:", err));
   }, []);
 
-  // Helper function: array index ke basis par safe data nikalo
   const getImgSrc = (index) => images[index]?.image_url || null;
   const getImgAlt = (index) => images[index]?.alt_text || "Workshop Image";
 
   return (
     <section className="relative min-h-screen w-full flex flex-col items-center justify-center py-10 px-4 md:px-6 overflow-hidden bg-[linear-gradient(155deg,#eef2ff_0%,#ffffff_48%,#f5f0ff_100%)] font-sans">
-      
-      {/* (Aapka CSS ekdum waise ka waisa yahan rahega) */}
       <style>{`
         @keyframes swingAnimation {
           0%, 100% { transform: rotate(var(--start-rotation)); }
@@ -107,57 +114,128 @@ export default function GallerySection() {
       `}</style>
 
       {/* Header */}
-      <div className={`text-center mb-4 md:mb-8 relative z-20 text-reveal ${isVisible ? "animate-in" : ""}`}>
+      <div
+        className={`text-center mb-4 md:mb-8 relative z-20 text-reveal ${isVisible ? "animate-in" : ""}`}
+      >
         <StarRating />
-       <p className="text-gray-500 font-bold text-xs md:text-sm mt-2 uppercase tracking-wide">
-4.8/5 Rated by Schools
-</p>
+        <p className="text-gray-500 font-bold text-xs md:text-sm mt-2 uppercase tracking-wide">
+          4.75/5 Rated by Schools
+        </p>
       </div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto">
-        
         {/* Mobile Title */}
-        <div className={`flex flex-col items-center mb-10 md:hidden text-reveal ${isVisible ? "animate-in" : ""}`} style={{ transitionDelay: '0.2s' }}>
-          <h2 className="text-2xl font-black text-gray-900 leading-tight text-center">
-            Keeping teachers, <span className="text-[#0066cc]">families,</span> and <span className="text-[#FEBF48]">kids</span> connected
+        <div
+          className={`flex flex-col items-center mb-10 md:hidden text-reveal ${isVisible ? "animate-in" : ""}`}
+          style={{ transitionDelay: "0.2s" }}
+        >
+          <h2 className="text-2xl font-black text-[#1a365d] leading-tight text-center">
+            Keeping teachers, <span className="text-[#0066cc]">families,</span>{" "}
+            and <span className="text-[#FEBF48]">kids</span> connected
           </h2>
         </div>
 
         {/* Dynamic Image Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 items-center">
-
           {/* Column 1 */}
           <div className="flex flex-col gap-4 md:gap-6 lg:mt-12">
-            <ImgCard isVisible={isVisible} delay="0.1s" rotate={-6} className="h-40 md:h-48" src={getImgSrc(0)} alt={getImgAlt(0)} />
-            <ImgCard isVisible={isVisible} delay="0.3s" rotate={4}  className="h-40 md:h-48" src={getImgSrc(1)} alt={getImgAlt(1)} />
+            <ImgCard
+              isVisible={isVisible}
+              delay="0.1s"
+              rotate={-6}
+              className="h-40 md:h-48"
+              src={getImgSrc(0)}
+              alt={getImgAlt(0)}
+            />
+            <ImgCard
+              isVisible={isVisible}
+              delay="0.3s"
+              rotate={4}
+              className="h-40 md:h-48"
+              src={getImgSrc(1)}
+              alt={getImgAlt(1)}
+            />
           </div>
 
           {/* Column 2 */}
           <div className="flex flex-col gap-4 md:gap-6">
-            <ImgCard isVisible={isVisible} delay="0.2s" rotate={3}  className="h-44 md:h-52" src={getImgSrc(2)} alt={getImgAlt(2)} />
-            <ImgCard isVisible={isVisible} delay="0.4s" rotate={-4} className="h-40 md:h-48" src={getImgSrc(3)} alt={getImgAlt(3)} />
+            <ImgCard
+              isVisible={isVisible}
+              delay="0.2s"
+              rotate={3}
+              className="h-44 md:h-52"
+              src={getImgSrc(2)}
+              alt={getImgAlt(2)}
+            />
+            <ImgCard
+              isVisible={isVisible}
+              delay="0.4s"
+              rotate={-4}
+              className="h-40 md:h-48"
+              src={getImgSrc(3)}
+              alt={getImgAlt(3)}
+            />
           </div>
 
           {/* Column 3 - Center (Image + Text) */}
-          <div className={`hidden md:flex flex-col items-center gap-6 text-reveal ${isVisible ? "animate-in" : ""}`} style={{ transitionDelay: '0.5s' }}>
-            <ImgCard isVisible={isVisible} delay="0.5s" rotate={-2} className="w-full h-56" src={getImgSrc(4)} alt={getImgAlt(4)} />
-            <h2 className="text-2xl lg:text-3xl font-black text-gray-900 leading-tight text-center">
-              Keeping <span className="text-red-500">teachers,</span> <span className="text-[#0066cc]">families,</span> and <span className="text-[#FEBF48]">kids</span> connected
+          <div
+            className={`hidden md:flex flex-col items-center gap-6 text-reveal ${isVisible ? "animate-in" : ""}`}
+            style={{ transitionDelay: "0.5s" }}
+          >
+            <ImgCard
+              isVisible={isVisible}
+              delay="0.5s"
+              rotate={-2}
+              className="w-full h-56"
+              src={getImgSrc(4)}
+              alt={getImgAlt(4)}
+            />
+            <h2 className="text-2xl lg:text-3xl font-black text-[#1a365d] leading-tight text-center">
+              Keeping <span className="text-red-500">teachers,</span>{" "}
+              <span className="text-[#0066cc]">families,</span> and{" "}
+              <span className="text-[#FEBF48]">kids</span> connected
             </h2>
           </div>
 
           {/* Column 4 */}
           <div className="flex flex-col gap-4 md:gap-6">
-            <ImgCard isVisible={isVisible} delay="0.25s" rotate={5}  className="h-44 md:h-52" src={getImgSrc(5)} alt={getImgAlt(5)} />
-            <ImgCard isVisible={isVisible} delay="0.45s" rotate={-3} className="h-40 md:h-48" src={getImgSrc(6)} alt={getImgAlt(6)} />
+            <ImgCard
+              isVisible={isVisible}
+              delay="0.25s"
+              rotate={5}
+              className="h-44 md:h-52"
+              src={getImgSrc(5)}
+              alt={getImgAlt(5)}
+            />
+            <ImgCard
+              isVisible={isVisible}
+              delay="0.45s"
+              rotate={-3}
+              className="h-40 md:h-48"
+              src={getImgSrc(6)}
+              alt={getImgAlt(6)}
+            />
           </div>
 
           {/* Column 5 */}
           <div className="flex md:hidden lg:flex flex-col gap-4 md:gap-6 lg:mt-12">
-            <ImgCard isVisible={isVisible} delay="0.15s" rotate={-5} className="h-40 md:h-48" src={getImgSrc(7)} alt={getImgAlt(7)} />
-            <ImgCard isVisible={isVisible} delay="0.35s" rotate={4}  className="h-40 md:h-48" src={getImgSrc(8)} alt={getImgAlt(8)} />
+            <ImgCard
+              isVisible={isVisible}
+              delay="0.15s"
+              rotate={-5}
+              className="h-40 md:h-48"
+              src={getImgSrc(7)}
+              alt={getImgAlt(7)}
+            />
+            <ImgCard
+              isVisible={isVisible}
+              delay="0.35s"
+              rotate={4}
+              className="h-40 md:h-48"
+              src={getImgSrc(8)}
+              alt={getImgAlt(8)}
+            />
           </div>
-
         </div>
       </div>
     </section>
