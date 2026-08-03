@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, QrCode } from "lucide-react";
-import logo from "../assets/logo.png";
+// import logo from "../assets/logo.png";
 
-// Pura link (Absolute URL) use karein yahan
-const REGISTRATION_FORM_URL = "https://mypeegu.com/registration"; 
+// 🔥 NEW: Link mein ?source=Website add kiya gaya hai
+const REGISTRATION_FORM_URL = "https://mypeegu.com/registration?source=Website"; 
 
 const REGISTRATION_QR_IMAGE = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=10&data=${encodeURIComponent(
   REGISTRATION_FORM_URL
@@ -51,9 +51,9 @@ const ConferenceRegisterWidget = () => {
           </button>
 
           <div className="flex flex-col items-center justify-center gap-1 mb-2">
-            <img src={logo} alt="My Peegu" className="h-5 w-auto object-contain" />
-            <span className="text-[11px] font-black text-[#1a2b4b] leading-tight">
-              Register for Conference
+            {/* <img src={logo} alt="My Peegu" className="h-5 w-auto object-contain" /> */}
+            <span className="text-[11px] font-black text-[#1a2b4b] leading-tight border-b border-gray-200 pb-1">
+              Platform Registration
             </span>
           </div>
 

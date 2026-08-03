@@ -10,7 +10,7 @@ import {
   FaChevronRight,
   FaWhatsapp
 } from 'react-icons/fa';
-import logo from "../assets/logo.png"; 
+import logo from "../assets/MyPeeguLogo.png"; 
 import { API_ENDPOINTS } from "../config/api";
 
 const Footer = () => {

@@ -9,6 +9,7 @@ import OurApproach from "./pages/ourApproach/OurApproach";
 import InstitutionalArchitecture from "./pages/institutional/InstitutionalArchitecture";
 import Careers from "./pages/career/career";
 import MyPeeguActivationForm from "./pages/form/MyPeeguActivationForm";
+import WorkshopFlyerGenerator from "./pages/form/WorkshopFlyerGenerator";
 
 export const router = createBrowserRouter([
   {
@@ -32,5 +33,6 @@ export const router = createBrowserRouter([
      
     ],
   },
-  { path: "/registration", element: <MyPeeguActivationForm /> }
+  { path: "/registration", element: <MyPeeguActivationForm /> },
+  {path: "/registration/workshop-flyer-generator", element: <WorkshopFlyerGenerator />},
 ]);

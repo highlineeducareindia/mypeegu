@@ -305,7 +305,7 @@ import {
   Building2,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "../assets/logo.png";
+import logo from "../assets/MyPeeguLogo.png"; 
 import Button from "./Button";
 
 const Header = () => {

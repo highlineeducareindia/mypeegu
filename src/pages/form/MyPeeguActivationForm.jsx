@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { 
   User, 
@@ -10,12 +10,15 @@ import {
   KeyRound, 
   ShieldCheck 
 } from 'lucide-react';
+import logo from '../../assets/MyPeeguLogo.png'; 
 
 const API_BASE_URL = "https://app.mypeegu.com/api";
 const REGISTRATION_ENDPOINT = `${API_BASE_URL}/counsellor-registration`;
 
 const MyPeeguActivationForm = () => {
   const navigate = useNavigate();
+  const location = useLocation(); 
+
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 7;
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -44,7 +47,6 @@ const MyPeeguActivationForm = () => {
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     
-    // Clear the error for the specific field being changed
     setErrors(prev => ({ ...prev, [name]: '' }));
     setApiError(''); 
 
@@ -173,6 +175,9 @@ const MyPeeguActivationForm = () => {
 
     setIsSubmitting(true);
 
+    const queryParams = new URLSearchParams(location.search);
+    const urlSource = queryParams.get('source') || 'Other';
+
     const curriculumFinal = formData.curriculum
       .map(v => (v === 'Other' && formData.curriculumOtherSpec ? formData.curriculumOtherSpec : v))
       .join(', ');
@@ -190,7 +195,11 @@ const MyPeeguActivationForm = () => {
       isUsingDigitalPlatform: formData.usePlatform === 'yes',
       platformName: formData.usePlatform === 'yes' ? formData.platformName : '',
       wantsComplimentaryAccess: formData.access === 'yes',
-      consentAccepted: formData.consentAccepted
+      consentAccepted: formData.consentAccepted,
+      
+      registrationSource: urlSource,
+      workshopLocation: urlSource === 'Workshop' ? formData.city : '', 
+      otherRegistrationSource: urlSource === 'Other' ? 'Direct Link' : ''
     };
 
     try {
@@ -206,12 +215,12 @@ const MyPeeguActivationForm = () => {
         throw new Error((data && (data.message || data.error)) || `Request failed (status ${response.status})`);
       }
 
-      // Beautiful Custom Popup matching MyPeegu UI
+      // 🔥 FIX 1: Width Fix for Desktop (width: 400 set kiya hai)
       Swal.fire({
         html: `
           <div class="flex flex-col items-center justify-center p-2">
             <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-4 border-2 border-blue-100">
-              <img src="https://app.mypeegu.com/favicon.png" alt="MyPeegu Logo" class="w-10 h-10 object-contain" />
+                <img src="${logo}" alt="MyPeegu Logo" class="w-10 h-10 object-contain" />
             </div>
             <h2 class="text-2xl font-extrabold text-[#1A233A] mb-2 tracking-tight">Registration Successful!</h2>
             <p class="text-[#4B5563] text-sm mb-6 text-center">
@@ -224,19 +233,33 @@ const MyPeeguActivationForm = () => {
         `,
         showConfirmButton: false,
         timer: 2000,
+        width: 360, // <--- Ye desktop par popup ko chota rakhega
         background: '#ffffff',
-        backdrop: `rgba(26, 35, 58, 0.6)`, // Dark navy backdrop
+        backdrop: `rgba(26, 35, 58, 0.6)`, 
         allowOutsideClick: false,
         customClass: {
           container: 'form-font-inter',
-          popup: 'rounded-3xl shadow-2xl border border-gray-100 p-6 md:p-8 !w-[90%] max-w-sm',
+          popup: 'rounded-3xl shadow-2xl border border-gray-100 p-6',
         }
       }).then(() => {
         window.location.href = "https://mypeegu.com";
       });
 
     } catch (err) {
-      setApiError(`Submission failed: ${err.message}. Please try again.`);
+      // 🔥 FIX 2: Smart Step Navigation
+      const errorMsg = err.message.toLowerCase();
+      
+      // Agar error message mein inme se koi word hai, toh automatically us step par jump karega
+      if (errorMsg.includes('mobile') || errorMsg.includes('number') || errorMsg.includes('email') || errorMsg.includes('name')) {
+        setCurrentStep(1); // Mobile aur Email Step 1 par hain
+      } else if (errorMsg.includes('school') || errorMsg.includes('city') || errorMsg.includes('location')) {
+        setCurrentStep(2); // School aur City Step 2 par hain
+      } else if (errorMsg.includes('role')) {
+        setCurrentStep(3); // Role Step 3 par hai
+      }
+      
+      // Error message ko top par dikhayega
+      setApiError(`Oops! ${err.message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -278,7 +301,7 @@ const MyPeeguActivationForm = () => {
         {/* Header */}
         <div className="bg-white/90 backdrop-blur rounded-xl shadow-sm border border-gray-200 px-4 py-3 sm:px-5 sm:py-2 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-3 text-center sm:text-left">
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
-            <img src="https://app.mypeegu.com/favicon.png" alt="MyPeegu" className="h-16 w-16 sm:h-20 sm:w-20 object-contain shrink-0" />
+            <img src={logo} alt="MyPeegu" className="h-16 w-16 sm:h-20 sm:w-20 object-contain shrink-0" />
             <div>
               <h1 className="text-lg sm:text-xl font-extrabold text-[#1A233A] tracking-tight leading-tight">MyPeegu Activation Portal</h1>
               <p className="text-gray-500 text-xs mt-1 sm:mt-0 leading-tight">Register your school to connect with the wellness architecture.</p>
@@ -286,7 +309,6 @@ const MyPeeguActivationForm = () => {
           </div>
           <div className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-100 px-3 py-1.5 rounded-lg shrink-0">
             <svg className="w-4 h-4 sm:w-3.5 sm:h-3.5 text-[#F97316]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-            <span className="text-[#F97316] text-xs sm:text-[11px] md:text-xs font-semibold tracking-wide whitespace-nowrap">Wellness Conference 2026</span>
           </div>
         </div>
 
@@ -307,8 +329,8 @@ const MyPeeguActivationForm = () => {
           {/* General API Error Banner */}
           {apiError && (
             <div className="mx-5 sm:mx-6 md:mx-8 mt-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4" />
-              {apiError}
+              <ShieldCheck className="w-4 h-4 shrink-0" />
+              <span>{apiError}</span>
             </div>
           )}
 
