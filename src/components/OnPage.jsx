@@ -1,45 +1,49 @@
-  // components/SEO.jsx
-  import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet";
 
-  const OnPage= ({
-    title,
-    description,
-    keywords,
-    url,
-    image,
-  }) => {
-    const siteName = "MyPeegu";
+const SITE_ORIGIN = "https://www.mypeegu.com";
+const DEFAULT_OG_IMAGE = `${SITE_ORIGIN}/og-image.png`;
 
-    return (
-      <Helmet>
-        {/* Basic */}
-        <title>{title} | {siteName}</title>
-        <meta name="description" content={description} />
-        <meta name="keywords" content={keywords} />
+const toAbsoluteUrl = (value, fallback = DEFAULT_OG_IMAGE) => {
+  if (!value) return fallback;
+  if (/^https?:\/\//i.test(value)) return value;
+  if (value.startsWith("//")) return `https:${value}`;
+  if (value.startsWith("/")) return `${SITE_ORIGIN}${value}`;
 
-        {/* Canonical URL */}
-        <link rel="canonical" href={url} />
+  // Legacy relative paths like ../../assets/foo.png → /assets/foo.png
+  const cleaned = value.replace(/^(\.\.\/)+/, "/").replace(/^assets\//, "/assets/");
+  return `${SITE_ORIGIN}${cleaned.startsWith("/") ? cleaned : `/${cleaned}`}`;
+};
 
-        {/* Open Graph (Facebook, WhatsApp) */}
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:url" content={url} />
-        <meta property="og:image" content={image} />
+const OnPage = ({ title, description, keywords, url, image }) => {
+  const siteName = "MyPeegu";
+  const absoluteUrl = toAbsoluteUrl(url, SITE_ORIGIN);
+  const absoluteImage = toAbsoluteUrl(image);
 
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={image} />
+  return (
+    <Helmet>
+      <title>
+        {title} | {siteName}
+      </title>
+      <meta name="description" content={description} />
+      <meta name="keywords" content={keywords} />
 
-        {/* Mobile + Browser */}
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="canonical" href={absoluteUrl} />
 
-        {/* Robots */}
-        <meta name="robots" content="index, follow" />
-      </Helmet>
-    );
-  };
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={absoluteUrl} />
+      <meta property="og:image" content={absoluteImage} />
+      <meta property="og:site_name" content={siteName} />
 
-  export default OnPage;
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={absoluteImage} />
+
+      <meta name="robots" content="index, follow" />
+    </Helmet>
+  );
+};
+
+export default OnPage;

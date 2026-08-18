@@ -3,6 +3,7 @@ import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
 import ScrollToTop from "./ScrollToTop";
 import ConferenceRegisterWidget from "./ConferenceRegisterWidget";
+import StudentSupportWidget from "./studentSupport/StudentSupportWidget";
 
 const Layout = () => {
   return (
@@ -16,6 +17,7 @@ const Layout = () => {
 
       <Footer />
       <ConferenceRegisterWidget />
+      <StudentSupportWidget />
     </div>
   );
 };

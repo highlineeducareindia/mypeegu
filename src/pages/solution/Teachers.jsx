@@ -187,7 +187,7 @@ const Teachers = () => {
         description="Explore MyPeegu’s psycho-educational workshops for teachers focused on classroom management, emotional intelligence, and student engagement."
         keywords="teacher training, classroom management, emotional intelligence for teachers, educator workshops, MyPeegu teachers"
         url="https://www.mypeegu.com/solution/educator-excellence"
-        image="../../assets/teacher/t4.jpeg"
+        image="https://www.mypeegu.com/og-image.png"
       />
 
       {/* 1. HERO SECTION */}

@@ -19,7 +19,7 @@ const Home = () => {
         description="MyPeegu helps schools build student wellbeing through structured programs and tools."
         keywords="student wellbeing, schools, education, MyPeegu"
         url="https://www.mypeegu.com/"
-        image="../../assets/MyPeeguLogo.png"
+        image="https://www.mypeegu.com/og-image.png"
       />
       {/* Hero Section with Interactive Cards */}
       <HeroSection />

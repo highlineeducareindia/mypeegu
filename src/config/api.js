@@ -1,4 +1,5 @@
 const BASE_URL = "https://arsh.opserv.in/mypeegu/api"; 
+const BASE_URL_DEV = "http://localhost:3004/api";
 
 export const API_ENDPOINTS = {
   AWARDS: `${BASE_URL}/awards?action=fetch`, 
@@ -21,4 +22,16 @@ export const API_ENDPOINTS = {
   TRIBE_PAGE: `${BASE_URL}/tribe`,
   GLOBAL_SETTINGS: `${BASE_URL}/settings`,
   CONTACT_SUBMIT: `${BASE_URL}/contact`,
+  STUDENT_SUPPORT_SESSION: `${BASE_URL_DEV}/student-support/session`,
+  STUDENT_SUPPORT_PROFILE: `${BASE_URL_DEV}/student-support/profile`,
+  STUDENT_SUPPORT_MESSAGE: `${BASE_URL_DEV}/student-support/message`,
+  STUDENT_SUPPORT_COUNSELLOR: `${BASE_URL_DEV}/student-support/counsellor-request`,
+  STUDENT_SUPPORT_FEEDBACK: `${BASE_URL_DEV}/student-support/feedback`,
 };
+
+export const studentSupportSessionById = (sessionId) =>
+  `${BASE_URL_DEV}/student-support/session/${sessionId}`;
+
+export const studentSupportEndSession = (sessionId) =>
+  `${BASE_URL_DEV}/student-support/session/${sessionId}/end`;
+

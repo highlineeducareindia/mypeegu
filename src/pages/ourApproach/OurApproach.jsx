@@ -136,7 +136,7 @@ const OurApproach = () => {
         description="Discover MyPeegu’s structured approach to building emotionally intelligent schools through SEL frameworks, interventions, and data-driven insights."
         keywords="SEL framework, emotional intelligence in schools, student wellbeing system, MyPeegu approach"
         url="https://www.mypeegu.com/our-approach"
-        image="../../assets/approach/1.jpg"
+        image="https://www.mypeegu.com/og-image.png"
       />
       {/* 1. MINIMAL HERO SECTION */}
       <HeroSection

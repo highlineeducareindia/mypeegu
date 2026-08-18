@@ -365,7 +365,7 @@ const Parents = () => {
         description="Explore MyPeegu’s psycho-educational parenting workshops designed to support emotional development, communication, and family wellbeing."
         keywords="parenting workshops, child development, emotional coaching, conscious parenting, MyPeegu parents"
         url="https://www.mypeegu.com/solution/parent-partnership"
-        image="../../assets/parents/4.jpg"
+        image="https://www.mypeegu.com/og-image.png"
       />
       {/* 1. HERO SECTION */}
       <HeroSection

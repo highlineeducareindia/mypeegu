@@ -217,7 +217,7 @@ const InstitutionalArchitecture = () => {
         description="Explore how MyPeegu’s institutional architecture integrates emotional wellbeing into school systems through a structured annual cycle."
         keywords="institutional architecture, school wellbeing system, SEL implementation, MyPeegu framework"
         url="https://www.mypeegu.com/institutional-architecture"
-        image="../../assets/architecture/a6.jpg"
+        image="https://www.mypeegu.com/og-image.png"
       />
       <HeroSection
         title="Institutional Architecture"

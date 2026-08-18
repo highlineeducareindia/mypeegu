@@ -1,63 +1,18 @@
 import { motion } from "framer-motion";
-import {
-  FaStar,
-  FaGraduationCap,
-  FaPersonChalkboard,
-  FaUsers,
-} from "react-icons/fa6";
-import { API_ENDPOINTS } from "../../config/api";
-import { useNavigate } from "react-router-dom";
+import { FaStar } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import Button from "../../components/Button";
 
 const HeroSection = () => {
-  const navigate = useNavigate();
-  const categories = [
-    {
-      id: 1,
-      name: "Teacher",
-      route: "/solution/educator-excellence",
-      icon: <FaPersonChalkboard />,
-      lightColor: "bg-red-50",
-      textColor: "text-[#FF4D4D]",
-    },
-    {
-      id: 2,
-      name: "Parent",
-      route: "/solution/parent-partnership",
-      icon: <FaUsers />,
-      lightColor: "bg-blue-50",
-      textColor: "text-[#0066CC]",
-    },
-    {
-      id: 3,
-      name: "Student",
-      route: "/solution/student-development",
-      icon: <FaGraduationCap />,
-      lightColor: "bg-yellow-50",
-      textColor: "text-[#FFB800]",
-    },
-  ];
-
-  const heroData = {
-    heading1: "Human-Centered Psychology.",
-    heading2: "AI-Enhanced Precision.",
-    subheading: `
-    MyPeegu brings together psychology, SEL frameworks, and intelligent systems to support emotionally intelligent schools.<br/>
-    <b>AI</b> helps identify early behavioural patterns, organise insights, and simplify documentation for educators and counsellors.<br/>
-    <b>Human</b> professionals remain at the centre — guiding care, interpretation, and meaningful student support.
-  `,
-  };
-
   return (
     <div className="bg-[#fcfdfe] overflow-x-hidden">
       <section className="relative w-full min-h-[85vh] flex items-center justify-center px-4 py-10 md:py-16">
-        {/* Background Decorative Stars */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
             className="absolute top-10 left-5 text-red-100 opacity-40"
           >
-            {/* Star size also scales with screen */}
             <FaStar size="clamp(60px, 10vw, 120px)" />
           </motion.div>
           <motion.div
@@ -69,47 +24,51 @@ const HeroSection = () => {
           </motion.div>
         </div>
 
-        <div className="max-w-7xl mx-auto text-center relative z-10 px-2">
-          {/* Tagline Scaling */}
-          {/* <motion.span 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            className="text-[#0066cc] font-black tracking-[0.15em] text-[clamp(0.6rem,1.5vw,0.8rem)] uppercase mb-4 block"
-          >
-            {heroData.tagline}
-          </motion.span> */}
-          <motion.h1 className="text-[clamp(2.2rem,6vw,4rem)] font-[900] text-[#1a365d] mb-6 leading-[1.1] tracking-tight">
-            {heroData.heading1} <br />
-            <span className="text-[#0066cc] inline-block mt-2">
-              {heroData.heading2}
-            </span>
-          </motion.h1>
+        <div className="max-w-4xl mx-auto text-center relative z-10 px-2">
           <motion.p
-            className="text-[clamp(1.1rem,3.5vw,1.2rem)]
-    md:text-[clamp(1rem,2vw,1.15rem)] text-slate-600 mx-auto max-w-[95%] md:max-w-5xl mx-auto mb-6 font-medium leading-relaxed "
-            dangerouslySetInnerHTML={{ __html: heroData.subheading }}
-          />
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-[clamp(2.4rem,7vw,4.5rem)] font-[900] text-[#0066cc] mb-4 leading-none tracking-tight"
+          >
+            MyPeegu
+          </motion.p>
 
-          {/* Categories Scaling */}
-          <div className="flex flex-wrap justify-center items-center gap-3 md:gap-8 pb-6">
-            {categories.map((item) => (
-              <motion.div
-                key={item.id}
-                onClick={() => navigate(item.route)}
-                whileHover={{ scale: 1.05 }}
-                className="relative cursor-pointer rounded-[2rem] md:rounded-[3.5rem] border-2 md:border-3 flex flex-col items-center justify-center p-3 transition-all duration-300 bg-white border-transparent shadow-[0_10px_40px_rgba(0,0,0,0.04)] hover:shadow-lg hover:border-[#0066cc] w-[clamp(100px,25vw,180px)] h-[clamp(110px,25vw,180px)]"
-              >
-                <div
-                  className={`rounded-2xl md:rounded-[2rem] flex items-center justify-center transition-all duration-500 w-[clamp(40px,10vw,64px)] h-[clamp(40px,10vw,64px)] text-[clamp(1.2rem,3vw,2rem)] ${item.textColor} ${item.lightColor}`}
-                >
-                  {item.icon}
-                </div>
-                <h3 className="font-black uppercase tracking-tight mt-3 text-[clamp(0.6rem,1.5vw,0.85rem)] text-gray-500">
-                  {item.name}
-                </h3>
-              </motion.div>
-            ))}
-          </div>
+          <motion.h1
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.08 }}
+            className="text-[clamp(1.5rem,4vw,2.35rem)] font-[800] text-[#1a365d] mb-5 leading-tight tracking-tight"
+          >
+            Psychology-led care for emotionally intelligent schools
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.14 }}
+            className="text-[clamp(1rem,2.2vw,1.15rem)] text-slate-600 mx-auto max-w-2xl mb-8 font-medium leading-relaxed"
+          >
+            Human insight first. AI assists educators and counsellors with early
+            patterns, clearer documentation, and stronger student support.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.2 }}
+            className="flex flex-wrap justify-center items-center gap-3 md:gap-4"
+          >
+            <Link to="/our-approach">
+              <Button className="!px-7 !py-3">Explore Our Approach</Button>
+            </Link>
+            <Link
+              to="/contact"
+              className="inline-flex items-center justify-center px-7 py-3 rounded-full font-bold text-[#0066cc] border-2 border-[#0066cc] hover:bg-blue-50 transition-colors"
+            >
+              Connect With Us
+            </Link>
+          </motion.div>
         </div>
       </section>
     </div>

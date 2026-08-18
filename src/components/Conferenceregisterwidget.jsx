@@ -41,7 +41,7 @@ const ConferenceRegisterWidget = () => {
           exit={{ opacity: 0, y: 30, scale: 0.9 }}
           transition={{ type: "spring", stiffness: 260, damping: 22 }}
           // Reduced width to 180px and padded slightly less for a more compact look
-          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[999] w-[180px] bg-white border border-gray-100 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-3 text-center"
+          className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-[999] w-[180px] bg-white border border-gray-100 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-3 text-center"
         >
           <button
             onClick={handleClose}

@@ -1,12 +1,11 @@
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+/* Fonts load from index.html <link> to avoid PostCSS @import order issues */
 
 body {
-  font-family: "Outfit", "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
-/* Heading ke liye SN Pro */
 .snpro {
-  font-family: 'SN Pro', sans-serif;
+  font-family: "Inter", sans-serif;
 }

@@ -407,11 +407,15 @@ const Header = () => {
         </nav>
 
         <div className="hidden lg:block shrink-0 ml-2 xl:ml-4">
-          <Button className="!px-5 xl:!px-8 !py-2 xl:!py-3 !text-[15px] xl:!text-base">
-            <NavLink to="https://app.mypeegu.com/" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://app.mypeegu.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button className="!px-5 xl:!px-8 !py-2 xl:!py-3 !text-[15px] xl:!text-base">
               Login
-            </NavLink>
-          </Button>
+            </Button>
+          </a>
         </div>
 
         <button className="lg:hidden p-2 text-[#1a2b4b]" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>

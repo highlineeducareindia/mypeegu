@@ -162,7 +162,7 @@ const Students = () => {
         description="Discover MyPeegu’s student development programs focused on emotional intelligence, SEL frameworks, and holistic growth across school years."
         keywords="student development, SEL programs, emotional intelligence in schools, MyPeegu students"
         url="https://www.mypeegu.com/solution/student-development"
-        image="../../assets/student/1.jpg"
+        image="https://www.mypeegu.com/og-image.png"
       />
       {/* 1. HERO SECTION */}
       <HeroSection

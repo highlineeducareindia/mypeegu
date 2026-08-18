@@ -35,7 +35,7 @@ const Career = () => {
         description="Join MyPeegu and be part of a community shaping emotionally intelligent schools."
         keywords="careers, psychology jobs, education jobs"
         url="https://www.mypeegu.com/careers-community"
-        image="../../assets/career/2.png"
+        image="https://www.mypeegu.com/og-image.png"
       />
       {/* 1. HERO SECTION */}
       <HeroSection
@@ -49,7 +49,7 @@ const Career = () => {
       {/* 2. INTRODUCTION */}
       <motion.section
         {...fadeInUp}
-        className="w-full bg-white py-10 md:py-10 overflow-h idden relative border-b border-slate-100"
+        className="w-full bg-white py-10 md:py-10 overflow-hidden relative border-b border-slate-100"
       >
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-50/50 rounded-full blur-3xl -z-10" />
         <div className="max-w-5xl mx-auto px-6 relative z-10">

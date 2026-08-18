@@ -106,7 +106,7 @@ export default function ContactUs() {
       description="Get in touch with MyPeegu experts for student wellbeing solutions, school programs, and collaborations."
       keywords="contact MyPeegu, school wellbeing support, education consultation, SEL programs"
       url="https://www.mypeegu.com/contact"
-      image="../../assets/student/4year.jpeg"
+      image="https://www.mypeegu.com/og-image.png"
     />
       <HeroSection
         badge="Connect with Experts"
