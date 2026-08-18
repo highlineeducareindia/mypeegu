@@ -1,5 +1,5 @@
 const BASE_URL = "https://arsh.opserv.in/mypeegu/api"; 
-const BASE_URL_DEV = "http://localhost:3004/api";
+const BASE_URL_DEV = "https://app.mypeegu.com/api";
 
 export const API_ENDPOINTS = {
   AWARDS: `${BASE_URL}/awards?action=fetch`, 
