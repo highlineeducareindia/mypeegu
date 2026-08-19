@@ -35,7 +35,7 @@ const FeaturedOn = () => {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#D32F2F] tracking-[0.12em] sm:tracking-[0.2em] uppercase px-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-[#D32F2F] tracking-[0.2em] uppercase">
             Featured On
           </h2>
           <div className="h-1 w-12 bg-[#D32F2F] mx-auto mt-4 rounded-full opacity-40" />
@@ -45,8 +45,8 @@ const FeaturedOn = () => {
         <div className="relative flex overflow-hidden group">
           
           {/* Edge Fades for a cleaner look */}
-          <div className="absolute inset-y-0 left-0 w-8 sm:w-16 md:w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-8 sm:w-16 md:w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10" />
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10" />
 
           {/* Scrolling Wrapper */}
           <motion.div 

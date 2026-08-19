@@ -115,7 +115,7 @@ const CommunitySection = () => {
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="text-2xl sm:text-3xl md:text-4xl font-[1000] text-[#1a365d] tracking-tight leading-[1.1]"
+          className="text-3xl sm:text-3xl md:text-4xl font-[1000] text-[#1a365d] tracking-tight leading-[1.1]"
         >
           Our community is our <br className="hidden sm:block" /> 
           <span className="text-[#0066CC]"> superpower</span>

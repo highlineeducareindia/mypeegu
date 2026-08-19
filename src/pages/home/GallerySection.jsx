@@ -80,7 +80,7 @@ export default function GallerySection() {
   const getImgAlt = (index) => images[index]?.alt_text || "Workshop Image";
 
   return (
-    <section className="relative w-full flex flex-col items-center justify-center py-10 sm:py-12 md:py-16 px-4 md:px-6 overflow-hidden bg-[linear-gradient(155deg,#eef2ff_0%,#ffffff_48%,#f5f0ff_100%)] font-sans">
+    <section className="relative min-h-screen w-full flex flex-col items-center justify-center py-10 px-4 md:px-6 overflow-hidden bg-[linear-gradient(155deg,#eef2ff_0%,#ffffff_48%,#f5f0ff_100%)] font-sans">
       <style>{`
         @keyframes swingAnimation {
           0%, 100% { transform: rotate(var(--start-rotation)); }

@@ -32,19 +32,19 @@ const Cardsection = () => {
   return (
     <div>
       {/* card section */}
-      <div className="flex items-center justify-center min-h-0 md:min-h-[430px] bg-white p-4 sm:p-6">
-        <div className="relative w-full max-w-6xl bg-[#F0F7FF] rounded-[28px] sm:rounded-[40px] md:rounded-[50px] py-8 sm:py-10 px-4 flex flex-col items-center justify-center overflow-hidden border border-blue-50/50">
+      <div className="flex items-center justify-center min-h-[430px] bg-white p-6">
+        <div className="relative w-full max-w-6xl bg-[#F0F7FF] rounded-[50px] py-10 px-4 flex flex-col items-center justify-center overflow-hidden border border-blue-50/50">
           
           {/* Animated Dots */}
           <motion.div
             animate={{ y: [0, -8, 0], rotate: [45, 50, 45] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="hidden sm:block absolute top-20 left-[32%] w-6 h-6 bg-[#FFD700] rounded-lg shadow-sm"
+            className="absolute top-20 left-[32%] w-6 h-6 bg-[#FFD700] rounded-lg shadow-sm"
           />
           <motion.div
             animate={{ y: [0, 10, 0], rotate: [10, 20, 10] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-            className="hidden sm:block absolute top-32 right-[32%] w-6 h-6 bg-[#FF4D4D] rounded-md shadow-sm"
+            className="absolute top-32 right-[32%] w-6 h-6 bg-[#FF4D4D] rounded-md shadow-sm"
           />
           
           <div className="relative z-10 mb-6 group">
@@ -63,7 +63,7 @@ const Cardsection = () => {
           
           <div className="relative z-10 text-center max-w-2xl">
             {/* Dynamic Title */}
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#1a365d] tracking-tight mb-6 sm:mb-8 px-2">
+            <h1 className="text-3xl md:text-4xl lg:text-4xl font-black text-[#1a365d] tracking-tight mb-8">
               {ctaData.title || "A world of adventure awaits."}
             </h1>
             

@@ -13,7 +13,7 @@ import Landing from "./Landing";
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
+    <div className="min-h-screen bg-white overflow-hidden ">
       <OnPage
         title="Home"
         description="MyPeegu helps schools build student wellbeing through structured programs and tools."
