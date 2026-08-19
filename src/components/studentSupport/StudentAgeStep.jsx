@@ -17,7 +17,13 @@ const StudentAgeStep = ({ onContinue }) => {
   return (
     <form onSubmit={submit} className="p-5 space-y-4">
       <div>
-        <h2 className="text-lg font-black text-[#1a365d]">How old are you?</h2>
+        <h2 className="text-lg font-black text-[#1a365d]">
+          Hi, I’m PIVA, your MyPeegu Virtual Assistant. How can I help you today?
+        </h2>
+        <p className="text-sm text-slate-500 font-medium mt-2 leading-relaxed">
+          How are you today?
+        </p>
+        <p className="text-sm font-bold text-[#1a365d] mt-4">How old are you?</p>
         <p className="text-sm text-slate-500 font-medium mt-1 leading-relaxed">
           This helps MyPeegu keep the conversation age-appropriate. You can stay anonymous.
         </p>

@@ -21,7 +21,7 @@ const ChatMessage = ({ role, text }) => {
         }`}
       >
         {isMyPeegu ? (
-          <p className="text-[10px] font-black uppercase tracking-wider text-[#0066cc] mb-1">MyPeegu</p>
+          <p className="text-[10px] font-black uppercase tracking-wider text-[#0066cc] mb-1">PIVA</p>
         ) : null}
         {text}
       </div>

@@ -66,8 +66,8 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
 
   const headerStatus = useMemo(() => {
     if (loading) return status;
-    if (view === "safety") return "MyPeegu is here with you.";
-    return "Here to listen, understand and help.";
+    if (view === "safety") return "PIVA is here with you.";
+    return "PIVA – MyPeegu Virtual Assistant";
   }, [loading, status, view]);
 
   const apiErrorText = (err) => {
@@ -203,7 +203,7 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
     setView("chat");
     setMessages([]);
     setLoading(true);
-    setStatus("MyPeegu is listening...");
+    setStatus("PIVA is listening...");
     failedPayload.current = { topicId: topic.id };
     await postMessage({ topicId: topic.id });
     setTimeout(() => inputRef.current?.focus(), 250);
@@ -217,7 +217,7 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
     setInput("");
     setError("");
     setLoading(true);
-    setStatus("MyPeegu is thinking...");
+    setStatus("PIVA is thinking...");
     failedPayload.current = { message: text };
     await postMessage({ message: text });
   };
@@ -226,7 +226,7 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
     if (!failedPayload.current) return;
     setError("");
     setLoading(true);
-    setStatus("MyPeegu is thinking...");
+    setStatus("PIVA is thinking...");
     await postMessage(failedPayload.current);
   };
 
@@ -254,7 +254,7 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
   };
 
   const disclaimer =
-    "MyPeegu AI Support is not a substitute for professional counselling. If you need immediate help, please contact a trusted adult or call KIRAN: 1800-599-0019.";
+    "PIVA – MyPeegu Virtual Assistant is not a substitute for professional counselling. If you need immediate help, please contact a trusted adult, email sankalp@mypeegu.in, or chat on WhatsApp: +91 90355 24865.";
 
   const composer = view === "chat" && (
     <div
@@ -322,7 +322,7 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
   );
 
   return (
-    <section className="flex flex-col h-full bg-white overflow-hidden" aria-label="MyPeegu Support">
+    <section className="flex flex-col h-full bg-white overflow-hidden" aria-label="PIVA – MyPeegu Virtual Assistant">
       <StudentSupportHeader status={headerStatus} onClose={handleClose} onMinimise={onMinimise} />
       {error && view !== "chat" ? (
         <p className="mx-5 mt-3 text-sm font-semibold text-red-600">{error}</p>

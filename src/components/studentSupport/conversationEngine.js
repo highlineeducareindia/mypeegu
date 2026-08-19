@@ -119,10 +119,10 @@ export const buildWelcome = (profile, topicTitle) => {
 
 export const getStatusForTurn = ({ studentText, turn }) => {
   const length = (studentText || "").trim().length;
-  if (turn <= 0) return "MyPeegu is listening...";
-  if (length > 140) return "MyPeegu is reflecting...";
-  if (turn >= 2) return "MyPeegu is preparing a response...";
-  return "MyPeegu is thinking...";
+  if (turn <= 0) return "PIVA is listening...";
+  if (length > 140) return "PIVA is reflecting...";
+  if (turn >= 2) return "PIVA is preparing a response...";
+  return "PIVA is thinking...";
 };
 
 export const createReply = ({

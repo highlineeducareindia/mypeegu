@@ -140,7 +140,12 @@ const Footer = () => {
                 <FaEnvelope size={14} />
               </div>
               <div>
-                <span className="block text-slate-800 font-bold text-sm tracking-tight">{settings?.email || "hi@mypeegu.in"}</span>
+                <a
+                  href="mailto:sankalp@mypeegu.in"
+                  className="block text-slate-800 font-bold text-sm tracking-tight hover:text-[#E13928]"
+                >
+                  sankalp@mypeegu.in
+                </a>
               </div>
             </div>
           </div>

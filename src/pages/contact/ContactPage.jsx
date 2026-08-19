@@ -29,7 +29,7 @@ export default function ContactUs() {
   });
   const [contactInfo, setContactInfo] = useState({
     phone: "+91 91084 75110",
-    email: "hi@mypeegu.in",
+    email: "sankalp@mypeegu.in",
   });
 
   // Fetch global settings for contact info
@@ -40,7 +40,7 @@ export default function ContactUs() {
         if (result.success && result.data) {
           setContactInfo({
             phone: result.data.phone || "+91 91084 75110",
-            email: result.data.email || "hi@mypeegu.in",
+            email: result.data.email || "sankalp@mypeegu.in",
           });
         }
       })
@@ -269,7 +269,7 @@ export default function ContactUs() {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <a href="mailto:hi@mypeegu.in">
+            <a href="mailto:sankalp@mypeegu.in">
               <Button className="w-full sm:w-auto px-8 py-4 rounded-xl bg-[#1E88E5] text-white font-bold hover:bg-[#1565C0] transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20">
                 Email Us Directly <ArrowRight size={18} />
               </Button>
