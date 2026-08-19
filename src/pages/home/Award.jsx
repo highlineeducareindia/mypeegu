@@ -26,7 +26,7 @@ export default function AwardsSection() {
   }, []);
 
   return (
-    <section className="bg-[#f7f9fc] py-10 px-6">
+    <section className="bg-[#f7f9fc] py-10 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto"> 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -42,7 +42,7 @@ export default function AwardsSection() {
             </span>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
-            <h2 className="text-3xl sm:text-3xl md:text-4xl font-[1000] text-[#1a365d] tracking-tight leading-[1.1]">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-[1000] text-[#1a365d] tracking-tight leading-[1.1]">
               Awards &amp; <span className="text-[#0066cc]">Recognition</span>
             </h2>
           </div>

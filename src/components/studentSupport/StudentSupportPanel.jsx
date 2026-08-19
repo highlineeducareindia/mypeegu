@@ -317,7 +317,7 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
           <Send size={16} />
         </button>
       </form>
-      <p className="text-[10px] text-slate-400 font-medium text-center mt-2 pb-1">{disclaimer}</p>
+      {/* <p className="text-[10px] text-slate-400 font-medium text-center mt-2 pb-1">{disclaimer}</p> */}
     </div>
   );
 

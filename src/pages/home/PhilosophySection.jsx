@@ -20,12 +20,12 @@ const CorePositioning = () => {
               <div className="w-6 h-[3px] rounded-full bg-[#FFB300]" />
               <div className="w-2 h-[3px] rounded-full bg-[#FFB300] opacity-40" />
             </div>
-            <span className="text-[#FFB300] text-[10px] font-black uppercase tracking-[0.28em]">
+            <span className="text-[#FFB300] text-[10px] font-black uppercase tracking-[0.18em] sm:tracking-[0.28em]">
               Our Philosophy
             </span>
           </div>
  
-          <h2 className="text-3xl md:text-4xl font-black text-[#1a365d] mb-2 leading-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#1a365d] mb-2 leading-tight">
             Core <span className="text-[#0066cc]">Positioning</span>
           </h2>
 
@@ -99,7 +99,7 @@ const CorePositioning = () => {
               <div className="w-6 h-[3px] rounded-full bg-[#0066cc]" />
               <div className="w-2 h-[3px] rounded-full bg-[#0066cc] opacity-40" />
             </div>
-            <span className="text-[#0066cc] text-[10px] font-black uppercase tracking-[0.28em]">
+            <span className="text-[#0066cc] text-[10px] font-black uppercase tracking-[0.18em] sm:tracking-[0.28em]">
               Our Difference
             </span>
           </div>
@@ -130,7 +130,7 @@ const CorePositioning = () => {
             {/* Top accent bar */}
             <div className="h-[4px] bg-gradient-to-r from-red-400 to-red-600" />
 
-            <div className="p-8">
+            <div className="p-5 sm:p-8">
               {/* Header */}
               <div className="flex items-center gap-3 mb-7">
                 <div className="w-9 h-9 rounded-full bg-red-50 border border-red-100 flex items-center justify-center">
@@ -170,7 +170,7 @@ const CorePositioning = () => {
             {/* Top accent bar */}
             <div className="h-[4px] bg-gradient-to-r from-[#0066cc] to-[#1a365d]" />
 
-            <div className="p-8">
+            <div className="p-5 sm:p-8">
               {/* Header */}
               <div className="flex items-center gap-3 mb-7">
                 <div className="w-9 h-9 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center">

@@ -25,7 +25,7 @@ const LoopConnector = ({ flip = false }) => {
     : `M 0 30 C 300 -20, 600 80, 800 140 C 1000 200, 1100 130, 1080 80 C 1060 30, 1000 20, 960 60 C 920 100, 940 170, 1020 200 C 1120 240, 1250 280, 1300 340`;
 
   return (
-    <div className="relative h-[180px] -my-[15px] pointer-events-none overflow-hidden z-0">
+    <div className="relative h-[90px] sm:h-[140px] md:h-[180px] -my-[8px] sm:-my-[15px] pointer-events-none overflow-hidden z-0">
       <svg width="100%" height="100%" viewBox="0 0 1200 340" preserveAspectRatio="xMidYMid meet" className="overflow-hidden">
         <path d={path} fill="none" stroke="#d0dce8" strokeWidth="2.5" strokeDasharray="10 12" strokeLinecap="round" />
       </svg>
@@ -35,25 +35,25 @@ const LoopConnector = ({ flip = false }) => {
 
 const SectionWrapper = ({ imageSrc, title, description, icon, imageLeft = true, bgColor = "bg-white" }) => {
   return (
-    <section className={`relative z-10 flex flex-col md:flex-row items-center justify-between px-8 md:px-32  ${bgColor}`}>
+    <section className={`relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 px-4 sm:px-8 lg:px-16 xl:px-24 py-8 md:py-10 ${bgColor}`}>
       {/* Image Container */}
-      <div className={`relative z-20 w-full md:w-1/2 flex justify-center mb-8 md:mb-0 ${imageLeft ? 'order-1' : 'order-1 md:order-2'}`}>
+      <div className={`relative z-20 w-full md:w-1/2 flex justify-center ${imageLeft ? 'order-1' : 'order-1 md:order-2'}`}>
         <img 
           src={imageSrc} 
           alt="feature" 
-          className="max-w-[90%] md:max-w-[550px] h-auto object-contain drop-shadow-lg" 
+          className="w-full max-w-[320px] sm:max-w-[420px] md:max-w-[550px] h-auto object-contain drop-shadow-lg" 
         />
       </div>
 
       {/* Text Container */}
-      <div className={`w-full md:w-1/2 ${imageLeft ? 'md:pl-16 order-2' : 'md:pr-16 order-2 md:order-1'}`}>
+      <div className={`w-full md:w-1/2 min-w-0 ${imageLeft ? 'md:pl-8 lg:pl-16 order-2' : 'md:pr-8 lg:pr-16 order-2 md:order-1'}`}>
       
         <div style={icon.style} className="w-14 h-14 rounded-full flex items-center justify-center mb-6 shadow-lg text-white">
           {icon.svg}
         </div>
         
-        <h2 className="text-3xl md:text-3xl font-extrabold text-[#1a365d] leading-tight mb-5" dangerouslySetInnerHTML={{ __html: title }} />
-        <p className="text-slate-600 leading-relaxed  text-[17px] max-w-md">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1a365d] leading-tight mb-4 sm:mb-5 break-words" dangerouslySetInnerHTML={{ __html: title }} />
+        <p className="text-slate-600 leading-relaxed text-base sm:text-[17px] max-w-md">
           {description}
         </p>
       </div>
@@ -93,7 +93,7 @@ export default function Landing() {
   if (loading) return <div className="py-10 text-center text-gray-500 font-bold">Loading Features...</div>;
 
   return (
-    <div className="font-sans antialiased bg-white overflow-x-hidden max-w-7xl mx-auto py-16 overflow-hidden">
+    <div className="font-sans antialiased bg-white overflow-x-hidden max-w-7xl mx-auto py-8 sm:py-12 md:py-16">
       
       {features.map((feature, index) => {
         const isImageLeft = index % 2 === 0;
