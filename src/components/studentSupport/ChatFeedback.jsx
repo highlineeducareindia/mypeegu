@@ -1,17 +1,26 @@
 import { useState } from "react";
-import { ThumbsDown, ThumbsUp } from "lucide-react";
-
-const RATING_MAP = { 1: 1, 2: 2, 3: 3, 4: 4, 5: 5 };
+import { ThumbsDown, ThumbsUp, X } from "lucide-react";
 
 const ChatFeedback = ({ visible, submitted, onSubmit }) => {
   const [rating, setRating] = useState(0);
   const [note, setNote] = useState("");
+  const [dismissed, setDismissed] = useState(false);
 
-  if (!visible) return null;
+  if (!visible || dismissed) return null;
 
   if (submitted) {
     return (
-      <p className="mx-4 mb-3 text-sm font-semibold text-slate-500">Thank you — that helps MyPeegu stay kinder.</p>
+      <div className="relative mx-4 mb-3 pr-8">
+        <button
+          type="button"
+          onClick={() => setDismissed(true)}
+          aria-label="Dismiss thank you message"
+          className="absolute top-0 right-0 p-1 rounded-full text-slate-400 hover:bg-slate-50 hover:text-[#1a365d]"
+        >
+          <X size={16} />
+        </button>
+        <p className="text-sm font-semibold text-slate-500">Thank you — that helps MyPeegu stay kinder.</p>
+      </div>
     );
   }
 

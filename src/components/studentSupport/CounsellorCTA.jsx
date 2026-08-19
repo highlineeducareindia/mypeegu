@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { X } from "lucide-react";
 
 const inputClass =
   "w-full px-4 py-3 rounded-2xl bg-slate-50 border-2 border-transparent outline-none text-sm font-medium text-[#1a365d] transition-all focus:border-[#0066cc] focus:bg-white";
@@ -19,13 +20,38 @@ const CounsellorCTA = ({
   const [consent, setConsent] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [formError, setFormError] = useState("");
+  const [dismissed, setDismissed] = useState(false);
+
+  if (dismissed) {
+    if (confirmed || alreadySubmitted) return null;
+    if (!visible) return null;
+    return (
+      <div className="mx-4 mb-3 text-center">
+        <button
+          type="button"
+          onClick={() => setDismissed(false)}
+          className="text-xs font-bold text-[#0066cc] underline underline-offset-2"
+        >
+          Need a counsellor? Tap to connect
+        </button>
+      </div>
+    );
+  }
 
   if (confirmed || alreadySubmitted) {
     return (
-      <div className="mx-4 mb-3 rounded-2xl bg-green-50 border border-green-100 px-4 py-3 text-sm font-semibold text-green-700">
+      <div className="relative mx-4 mb-3 rounded-2xl bg-green-50 border border-green-100 px-4 py-3 pr-10 text-sm font-semibold text-green-700">
+        <button
+          type="button"
+          onClick={() => setDismissed(true)}
+          aria-label="Dismiss counsellor update"
+          className="absolute top-2 right-2 p-1 rounded-full text-green-700/70 hover:bg-green-100 hover:text-green-800"
+        >
+          <X size={16} />
+        </button>
         {alreadySubmitted
-          ? "Your counsellor request is already submitted."
-          : "A MyPeegu Expert Counsellor request has been submitted."}
+          ? "Your counsellor request is already submitted. You can keep chatting with PIVA."
+          : "Your counsellor request is submitted. A MyPeegu expert will reach out. You can keep chatting with PIVA."}
       </div>
     );
   }
@@ -52,10 +78,18 @@ const CounsellorCTA = ({
   if (showForm) {
     return (
       <form
-        className="mx-4 mb-3 rounded-2xl border border-gray-100 bg-white p-4 space-y-3"
+        className="relative mx-4 mb-3 rounded-2xl border border-gray-100 bg-white p-4 space-y-3"
         onSubmit={submitWithContact}
       >
-        <p className="text-sm font-semibold text-[#1a365d]">
+        <button
+          type="button"
+          onClick={() => setDismissed(true)}
+          aria-label="Close counsellor form"
+          className="absolute top-2 right-2 p-1 rounded-full text-slate-400 hover:bg-slate-50 hover:text-[#1a365d]"
+        >
+          <X size={16} />
+        </button>
+        <p className="text-sm font-semibold text-[#1a365d] pr-6">
           Share a way for the counsellor to reach you (optional).
         </p>
         <input className={inputClass} value={name} onChange={(e) => setName(e.target.value)} placeholder="Name (optional)" />
@@ -84,8 +118,16 @@ const CounsellorCTA = ({
   }
 
   return (
-    <div className="mx-4 mb-3 rounded-2xl bg-blue-50/70 border border-blue-100 px-4 py-3">
-      <p className="text-sm font-medium text-[#1a365d] mb-3">
+    <div className="relative mx-4 mb-3 rounded-2xl bg-blue-50/70 border border-blue-100 px-4 py-3">
+      <button
+        type="button"
+        onClick={() => setDismissed(true)}
+        aria-label="Hide counsellor option"
+        className="absolute top-2 right-2 p-1 rounded-full text-slate-400 hover:bg-white hover:text-[#1a365d]"
+      >
+        <X size={16} />
+      </button>
+      <p className="text-sm font-medium text-[#1a365d] mb-3 pr-6">
         {prompt || "Would you like to talk this through with a MyPeegu Expert Counsellor?"}
       </p>
       <button
