@@ -39,13 +39,13 @@ const StudentSupportWidget = () => {
 
       {booted ? (
         <div
-          className={`fixed z-[1000] flex flex-col inset-x-0 bottom-0 top-8 sm:inset-auto sm:bottom-6 sm:right-6 sm:top-auto sm:w-[430px] sm:h-[min(720px,calc(100vh-2.5rem))] sm:max-h-[calc(100vh-2.5rem)] bg-white sm:rounded-[1.75rem] rounded-t-[1.75rem] shadow-[0_8px_30px_rgb(0,0,0,0.14)] border border-gray-100 overflow-hidden ${
+          className={`fixed z-[1000] flex flex-col inset-x-0 bottom-0 top-16 sm:inset-auto sm:bottom-6 sm:right-6 sm:top-auto sm:w-[400px] sm:h-[min(620px,calc(100vh-4rem))] sm:max-h-[calc(100vh-4rem)] bg-white sm:rounded-[1.75rem] rounded-t-[1.75rem] shadow-[0_8px_30px_rgb(0,0,0,0.14)] border border-gray-100 overflow-hidden ${
             open ? "" : "hidden"
           }`}
         >
           <Suspense
             fallback={
-              <div className="h-full min-h-[420px] flex items-center justify-center text-sm font-semibold text-[#0066cc]">
+              <div className="h-full min-h-[360px] flex items-center justify-center text-sm font-semibold text-[#0066cc]">
                 PIVA is listening...
               </div>
             }

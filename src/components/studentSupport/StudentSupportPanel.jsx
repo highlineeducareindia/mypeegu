@@ -29,7 +29,6 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
   const [topics, setTopics] = useState([]);
   const [locationHint, setLocationHint] = useState("");
   const [topicsLoading, setTopicsLoading] = useState(false);
-  const [choiceBusy, setChoiceBusy] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -42,12 +41,12 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
   const [counsellorBusy, setCounsellorBusy] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackSent, setFeedbackSent] = useState(false);
-  const [profileSubmitting, setProfileSubmitting] = useState(false);
   const [safetyReply, setSafetyReply] = useState("");
   const [keyboardInset, setKeyboardInset] = useState(0);
   const failedPayload = useRef(null);
   const inputRef = useRef(null);
   const continueModeRef = useRef("anonymous");
+  const sessionReadyRef = useRef(Promise.resolve());
 
   useEffect(() => {
     const viewport = window.visualViewport;
@@ -95,57 +94,67 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
     return true;
   };
 
-  const handleAnonymous = async () => {
-    setChoiceBusy(true);
+  const handleAnonymous = () => {
+    setView("topics");
+    setTopicsLoading(true);
     setError("");
-    try {
-      const session = await startSession("anonymous");
-      applySession(session);
-      setView("topics");
-    } catch (err) {
-      setError(apiErrorText(err));
-    } finally {
-      setChoiceBusy(false);
-      setTopicsLoading(false);
-    }
+
+    sessionReadyRef.current = startSession("anonymous")
+      .then((session) => {
+        applySession(session);
+        return session;
+      })
+      .catch((err) => {
+        setError(apiErrorText(err));
+        setView("choice");
+        throw err;
+      })
+      .finally(() => {
+        setTopicsLoading(false);
+      });
   };
 
-  const handlePersonalised = async () => {
-    setChoiceBusy(true);
+  const handlePersonalised = () => {
+    setView("form");
     setError("");
-    try {
-      const session = await startSession("personalised");
-      applySession(session);
-      setView("form");
-    } catch (err) {
-      setError(apiErrorText(err));
-    } finally {
-      setChoiceBusy(false);
-    }
+
+    sessionReadyRef.current = startSession("personalised")
+      .then((session) => {
+        applySession(session);
+        return session;
+      })
+      .catch((err) => {
+        setError(apiErrorText(err));
+        setView("choice");
+        throw err;
+      });
   };
 
   const handleFormSubmit = async (profileData) => {
-    setProfileSubmitting(true);
     setProfile(profileData);
+    setView("topics");
+    setTopicsLoading(true);
     setError("");
+
     try {
+      await sessionReadyRef.current;
       const result = await submitProfile(profileData);
       if (result.suggestedTopics?.length) setTopics(result.suggestedTopics);
-      setView("topics");
     } catch (err) {
       if (await recoverIfExpired(err)) {
         try {
           const result = await submitProfile(profileData);
           if (result.suggestedTopics?.length) setTopics(result.suggestedTopics);
-          setView("topics");
         } catch (retryErr) {
           setError(apiErrorText(retryErr));
+          setView("form");
         }
       } else {
         setError(apiErrorText(err));
+        setView("form");
       }
     } finally {
-      setProfileSubmitting(false);
+      setTopicsLoading(false);
     }
   };
 
@@ -199,13 +208,13 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
     }
   };
 
-  const startChat = async (topic) => {
+  const startChat = (topic) => {
     setView("chat");
-    setMessages([]);
+    setMessages([{ id: nextId(), role: "student", text: topic.title }]);
     setLoading(true);
     setStatus("PIVA is listening...");
     failedPayload.current = { topicId: topic.id };
-    await postMessage({ topicId: topic.id });
+    postMessage({ topicId: topic.id });
     setTimeout(() => inputRef.current?.focus(), 250);
   };
 
@@ -341,7 +350,6 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
         <div className="flex-1 overflow-y-auto">
           <StudentProfileChoice
             age={age}
-            busy={choiceBusy}
             onAnonymous={handleAnonymous}
             onPersonalised={handlePersonalised}
           />
@@ -353,7 +361,6 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
             age={age}
             onBack={() => setView("choice")}
             onSubmit={handleFormSubmit}
-            submitting={profileSubmitting}
           />
         </div>
       ) : null}
