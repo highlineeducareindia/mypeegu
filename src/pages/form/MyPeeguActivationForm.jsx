@@ -31,7 +31,33 @@ const MyPeeguActivationForm = () => {
   }, [location.search]);
 
   const isWorkshopFlow = isWorkshopSource(urlSource);
-  const totalSteps = isWorkshopFlow ? 6 : 7;
+  const totalSteps = 7;
+
+  const extractApiErrorMessage = (data, status) => {
+    const raw = data?.message ?? data?.error ?? data?.errors;
+    if (!raw) return `Request failed (status ${status})`;
+    if (typeof raw === "string") return raw;
+    if (Array.isArray(raw)) {
+      return raw
+        .map((item) =>
+          typeof item === "string"
+            ? item
+            : item?.message || item?.msg || JSON.stringify(item),
+        )
+        .filter(Boolean)
+        .join(" ");
+    }
+    if (typeof raw === "object") {
+      if (typeof raw.message === "string") return raw.message;
+      if (typeof raw.error === "string") return raw.error;
+      try {
+        return JSON.stringify(raw);
+      } catch {
+        return `Request failed (status ${status})`;
+      }
+    }
+    return String(raw);
+  };
 
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -132,13 +158,23 @@ const MyPeeguActivationForm = () => {
           }
           break;
         case 5:
+          if (formData.curriculum.includes("Other") && !formData.curriculumOtherSpec.trim()) {
+            newErrors.curriculumOtherSpec = "Please specify the curriculum";
+            isValid = false;
+          }
+          if (!formData.strength) {
+            newErrors.strength = "Please select approximate student strength";
+            isValid = false;
+          }
+          break;
+        case 6:
           if (!formData.workshopRegistrationType) {
             newErrors.workshopRegistrationType =
               "Please select a workshop registration type";
             isValid = false;
           }
           break;
-        case 6:
+        case 7:
           if (!formData.consentAccepted) {
             newErrors.consentAccepted =
               "Please agree to the consent before submitting";
@@ -265,51 +301,57 @@ const MyPeeguActivationForm = () => {
       .join(", ");
 
     const selectedWorkshopLabel = formatWorkshopDateLabel(formData.workshopDate);
+    const workshopMeta = [
+      selectedWorkshopLabel || formData.workshopDate,
+      formData.workshopRegistrationType,
+    ]
+      .filter(Boolean)
+      .join(" | ");
 
     const payload = isWorkshopFlow
       ? {
-        fullName: formData.fullName,
-        mobileNumber: formData.mobile,
-        email: formData.email,
-        schoolName: formData.schoolName,
-        schoolCity: formData.city,
-        role:
-          formData.role === "Other" ? formData.roleOtherSpec : formData.role,
-        otherRole: formData.role === "Other" ? formData.roleOtherSpec : "",
-        consentAccepted: formData.consentAccepted,
-        registrationSource: urlSource,
-        workshopDate: formData.workshopDate,
-        workshopDateLabel: selectedWorkshopLabel,
-        workshopRegistrationType: formData.workshopRegistrationType,
-        workshopLocation: formData.city,
-        otherRegistrationSource: "",
-        // Hidden website-only fields — not applicable; send safe defaults
-        curriculum: "",
-        studentStrength: "",
-        isUsingDigitalPlatform: false,
-        platformName: "",
-        wantsComplimentaryAccess: false,
-      }
+          fullName: formData.fullName,
+          mobileNumber: formData.mobile,
+          email: formData.email,
+          schoolName: formData.schoolName,
+          schoolCity: formData.city,
+          role:
+            formData.role === "Other" ? formData.roleOtherSpec : formData.role,
+          otherRole: formData.role === "Other" ? formData.roleOtherSpec : "",
+          curriculum: curriculumFinal,
+          studentStrength: formData.strength,
+          isUsingDigitalPlatform: false,
+          platformName: "",
+          wantsComplimentaryAccess: false,
+          consentAccepted: formData.consentAccepted,
+          registrationSource: urlSource,
+          // Persist date + type in existing backend fields until dedicated columns exist
+          workshopLocation: [formData.city, workshopMeta].filter(Boolean).join(" | "),
+          otherRegistrationSource: workshopMeta,
+          workshopDate: formData.workshopDate,
+          workshopDateLabel: selectedWorkshopLabel,
+          workshopRegistrationType: formData.workshopRegistrationType,
+        }
       : {
-        fullName: formData.fullName,
-        mobileNumber: formData.mobile,
-        email: formData.email,
-        schoolName: formData.schoolName,
-        schoolCity: formData.city,
-        role:
-          formData.role === "Other" ? formData.roleOtherSpec : formData.role,
-        otherRole: formData.role === "Other" ? formData.roleOtherSpec : "",
-        curriculum: curriculumFinal,
-        studentStrength: formData.strength,
-        isUsingDigitalPlatform: formData.usePlatform === "yes",
-        platformName:
-          formData.usePlatform === "yes" ? formData.platformName : "",
-        wantsComplimentaryAccess: formData.access === "yes",
-        consentAccepted: formData.consentAccepted,
-        registrationSource: urlSource,
-        workshopLocation: "",
-        otherRegistrationSource: urlSource === "Other" ? "Direct Link" : "",
-      };
+          fullName: formData.fullName,
+          mobileNumber: formData.mobile,
+          email: formData.email,
+          schoolName: formData.schoolName,
+          schoolCity: formData.city,
+          role:
+            formData.role === "Other" ? formData.roleOtherSpec : formData.role,
+          otherRole: formData.role === "Other" ? formData.roleOtherSpec : "",
+          curriculum: curriculumFinal,
+          studentStrength: formData.strength,
+          isUsingDigitalPlatform: formData.usePlatform === "yes",
+          platformName:
+            formData.usePlatform === "yes" ? formData.platformName : "",
+          wantsComplimentaryAccess: formData.access === "yes",
+          consentAccepted: formData.consentAccepted,
+          registrationSource: urlSource,
+          workshopLocation: "",
+          otherRegistrationSource: urlSource === "Other" ? "Direct Link" : "",
+        };
 
     try {
       const response = await fetch(REGISTRATION_ENDPOINT, {
@@ -318,17 +360,15 @@ const MyPeeguActivationForm = () => {
         body: JSON.stringify(payload),
       });
 
+      let data = null;
+      try {
+        data = await response.json();
+      } catch {
+        data = null;
+      }
+
       if (!response.ok) {
-        let data;
-        try {
-          data = await response.json();
-        } catch {
-          data = null;
-        }
-        throw new Error(
-          (data && (data.message || data.error)) ||
-          `Request failed (status ${response.status})`,
-        );
+        throw new Error(extractApiErrorMessage(data, response.status));
       }
 
       Swal.fire({
@@ -372,7 +412,7 @@ const MyPeeguActivationForm = () => {
           errorMsg.includes("mobile") ||
           errorMsg.includes("number") ||
           errorMsg.includes("email") ||
-          errorMsg.includes("name")
+          (errorMsg.includes("name") && !errorMsg.includes("school"))
         ) {
           setCurrentStep(2);
         } else if (
@@ -384,10 +424,16 @@ const MyPeeguActivationForm = () => {
         } else if (errorMsg.includes("role")) {
           setCurrentStep(4);
         } else if (
+          errorMsg.includes("curriculum") ||
+          errorMsg.includes("strength") ||
+          errorMsg.includes("student")
+        ) {
+          setCurrentStep(5);
+        } else if (
           errorMsg.includes("registration type") ||
           errorMsg.includes("workshop registration")
         ) {
-          setCurrentStep(5);
+          setCurrentStep(6);
         }
       } else if (
         errorMsg.includes("mobile") ||
@@ -758,6 +804,88 @@ const MyPeeguActivationForm = () => {
               <div className="animate-[fadeIn_0.4s_ease-in-out]">
                 <h2 className="text-lg sm:text-xl font-bold text-[#1A233A] mb-6 flex items-center gap-2">
                   <div className="bg-blue-100 p-1.5 rounded-lg text-[#0066CC]">
+                    <BookOpen className="w-5 h-5" />
+                  </div>
+                  School Profile
+                </h2>
+                <div className="space-y-8">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-4">
+                      Which curriculum does your school follow?
+                    </label>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                      {["CBSE", "ICSE", "IB", "Cambridge", "State Board", "Other"].map(
+                        (currOpt) => (
+                          <label
+                            key={currOpt}
+                            className="flex items-center gap-3 cursor-pointer"
+                          >
+                            <input
+                              type="checkbox"
+                              name="curriculum"
+                              value={currOpt}
+                              checked={formData.curriculum.includes(currOpt)}
+                              onChange={handleInputChange}
+                              className="w-4 h-4 rounded text-[#0066CC] border-gray-300 focus:ring-[#0066CC] cursor-pointer"
+                            />
+                            <span className="text-sm font-medium text-gray-700">
+                              {currOpt}
+                            </span>
+                          </label>
+                        ),
+                      )}
+                    </div>
+                    {formData.curriculum.includes("Other") && (
+                      <div className="mt-4 transition-all duration-300">
+                        <input
+                          type="text"
+                          name="curriculumOtherSpec"
+                          value={formData.curriculumOtherSpec}
+                          onChange={handleInputChange}
+                          placeholder="Please specify curriculum"
+                          className={inputClass(errors.curriculumOtherSpec)}
+                        />
+                        {errors.curriculumOtherSpec && (
+                          <p className="text-red-500 text-xs mt-1 font-medium">
+                            {errors.curriculumOtherSpec}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Approximate Student Strength{" "}
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      name="strength"
+                      value={formData.strength}
+                      onChange={handleInputChange}
+                      className={`${inputClass(errors.strength)} cursor-pointer`}
+                    >
+                      <option value="" disabled>
+                        Select student strength
+                      </option>
+                      <option value="Less than 500">Less than 500</option>
+                      <option value="500-1000">500-1000</option>
+                      <option value="1000-2000">1000-2000</option>
+                      <option value="Above 2000">Above 2000</option>
+                    </select>
+                    {errors.strength && (
+                      <p className="text-red-500 text-xs mt-1 font-medium">
+                        {errors.strength}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {isWorkshopFlow && currentStep === 6 && (
+              <div className="animate-[fadeIn_0.4s_ease-in-out]">
+                <h2 className="text-lg sm:text-xl font-bold text-[#1A233A] mb-6 flex items-center gap-2">
+                  <div className="bg-blue-100 p-1.5 rounded-lg text-[#0066CC]">
                     <ClipboardList className="w-5 h-5" />
                   </div>
                   Workshop Registration Type
@@ -767,10 +895,11 @@ const MyPeeguActivationForm = () => {
                   <span className="text-red-500">*</span>
                 </label>
                 <div
-                  className={`space-y-3 p-4 sm:p-5 rounded-lg border transition-colors ${errors.workshopRegistrationType
+                  className={`space-y-3 p-4 sm:p-5 rounded-lg border transition-colors ${
+                    errors.workshopRegistrationType
                       ? "bg-red-50 border-red-300"
                       : "bg-gray-50 border-gray-200"
-                    }`}
+                  }`}
                 >
                   {WORKSHOP_REGISTRATION_TYPES.map((typeOpt) => (
                     <label
@@ -799,7 +928,7 @@ const MyPeeguActivationForm = () => {
               </div>
             )}
 
-            {isWorkshopFlow && currentStep === 6 && (
+            {isWorkshopFlow && currentStep === 7 && (
               <div className="animate-[fadeIn_0.4s_ease-in-out]">
                 <h2 className="text-lg sm:text-xl font-bold text-[#1A233A] mb-6 flex items-center gap-2">
                   <div className="bg-blue-100 p-1.5 rounded-lg text-[#0066CC]">
@@ -808,10 +937,11 @@ const MyPeeguActivationForm = () => {
                   Consent
                 </h2>
                 <label
-                  className={`flex items-start gap-3 p-4 sm:p-5 rounded-lg cursor-pointer transition-colors shadow-sm border ${errors.consentAccepted
+                  className={`flex items-start gap-3 p-4 sm:p-5 rounded-lg cursor-pointer transition-colors shadow-sm border ${
+                    errors.consentAccepted
                       ? "bg-red-50 border-red-300"
                       : "bg-blue-50 border-blue-200 hover:border-[#0066CC]"
-                    }`}
+                  }`}
                 >
                   <input
                     type="checkbox"
