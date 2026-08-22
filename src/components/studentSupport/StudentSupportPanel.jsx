@@ -21,6 +21,31 @@ import {
 
 const nextId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 
+const emptyUiState = () => ({
+  view: "age",
+  age: null,
+  profile: null,
+  sessionId: "",
+  topics: [],
+  locationHint: "",
+  topicsLoading: false,
+  messages: [],
+  input: "",
+  loading: false,
+  status: "",
+  error: "",
+  showCounsellor: false,
+  counsellorPrompt: "",
+  counsellorConfirmed: false,
+  counsellorAlready: false,
+  counsellorBusy: false,
+  showFeedback: false,
+  feedbackSent: false,
+  safetyReply: "",
+  confirmEnd: false,
+  endingSession: false,
+});
+
 const StudentSupportPanel = ({ onClose, onMinimise }) => {
   const [view, setView] = useState("age");
   const [age, setAge] = useState(null);
@@ -43,6 +68,8 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
   const [feedbackSent, setFeedbackSent] = useState(false);
   const [safetyReply, setSafetyReply] = useState("");
   const [keyboardInset, setKeyboardInset] = useState(0);
+  const [confirmEnd, setConfirmEnd] = useState(false);
+  const [endingSession, setEndingSession] = useState(false);
   const failedPayload = useRef(null);
   const inputRef = useRef(null);
   const continueModeRef = useRef("anonymous");
@@ -66,6 +93,7 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
   const headerStatus = useMemo(() => {
     if (loading) return status;
     if (view === "safety") return "PIVA is here with you.";
+    if (view === "ended") return "Session ended";
     return "PIVA – MyPeegu Virtual Assistant";
   }, [loading, status, view]);
 
@@ -208,14 +236,70 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
     }
   };
 
+  /** Same active session: first topic or switch topic — keep history. */
   const startChat = (topic) => {
     setView("chat");
-    setMessages([{ id: nextId(), role: "student", text: topic.title }]);
+    setConfirmEnd(false);
+    setError("");
+    setMessages((prev) => [...prev, { id: nextId(), role: "student", text: topic.title }]);
     setLoading(true);
     setStatus("PIVA is listening...");
     failedPayload.current = { topicId: topic.id };
     postMessage({ topicId: topic.id });
     setTimeout(() => inputRef.current?.focus(), 250);
+  };
+
+  const goBackToTopics = () => {
+    setConfirmEnd(false);
+    setError("");
+    setView("topics");
+  };
+
+  const confirmEndSession = async () => {
+    if (endingSession) return;
+    setEndingSession(true);
+    setError("");
+    try {
+      if (sessionId) await endSupportSession(sessionId);
+      setConfirmEnd(false);
+      setView("ended");
+      setLoading(false);
+      setShowCounsellor(false);
+    } catch (err) {
+      setError(apiErrorText(err));
+      setConfirmEnd(false);
+    } finally {
+      setEndingSession(false);
+    }
+  };
+
+  const startNewConversation = () => {
+    const reset = emptyUiState();
+    setView(reset.view);
+    setAge(reset.age);
+    setProfile(reset.profile);
+    setSessionId(reset.sessionId);
+    setTopics(reset.topics);
+    setLocationHint(reset.locationHint);
+    setTopicsLoading(false);
+    setMessages([]);
+    setInput("");
+    setLoading(false);
+    setStatus("");
+    setError("");
+    setShowCounsellor(false);
+    setCounsellorPrompt("");
+    setCounsellorConfirmed(false);
+    setCounsellorAlready(false);
+    setCounsellorBusy(false);
+    setShowFeedback(false);
+    setFeedbackSent(false);
+    setSafetyReply("");
+    setConfirmEnd(false);
+    setEndingSession(false);
+    failedPayload.current = null;
+    continueModeRef.current = "anonymous";
+    sessionReadyRef.current = Promise.resolve();
   };
 
   const sendMessage = async (rawText) => {
@@ -257,13 +341,16 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
     }
   };
 
-  const handleClose = async () => {
-    if (sessionId) endSupportSession(sessionId);
+  /** Close / minimise only hide the widget — do not end the active session. */
+  const handleDismiss = () => {
+    setConfirmEnd(false);
     onClose();
   };
 
-  const disclaimer =
-    "PIVA – MyPeegu Virtual Assistant is not a substitute for professional counselling. If you need immediate help, please contact a trusted adult, email sankalp@mypeegu.in, or chat on WhatsApp: +91 90355 24865.";
+  const handleMinimise = () => {
+    setConfirmEnd(false);
+    onMinimise();
+  };
 
   const composer = view === "chat" && (
     <div
@@ -326,14 +413,21 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
           <Send size={16} />
         </button>
       </form>
-      {/* <p className="text-[10px] text-slate-400 font-medium text-center mt-2 pb-1">{disclaimer}</p> */}
     </div>
   );
 
   return (
-    <section className="flex flex-col h-full bg-white overflow-hidden" aria-label="PIVA – MyPeegu Virtual Assistant">
-      <StudentSupportHeader status={headerStatus} onClose={handleClose} onMinimise={onMinimise} />
-      {error && view !== "chat" ? (
+    <section className="flex flex-col h-full bg-white overflow-hidden relative" aria-label="PIVA – MyPeegu Virtual Assistant">
+      <StudentSupportHeader
+        status={headerStatus}
+        onClose={handleDismiss}
+        onMinimise={handleMinimise}
+        showBack={view === "chat"}
+        onBack={goBackToTopics}
+        showEndSession={(view === "chat" || view === "safety") && Boolean(sessionId)}
+        onEndSession={() => setConfirmEnd(true)}
+      />
+      {error && view !== "chat" && view !== "ended" ? (
         <p className="mx-5 mt-3 text-sm font-semibold text-red-600">{error}</p>
       ) : null}
       {view === "age" ? (
@@ -370,6 +464,7 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
             topics={topics}
             loading={topicsLoading}
             locationHint={locationHint}
+            continuing={messages.length > 0}
             onSelect={startChat}
           />
         </div>
@@ -397,6 +492,57 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
           <ChatMessages messages={messages} loading={loading} status={status} />
           {composer}
         </>
+      ) : null}
+      {view === "ended" ? (
+        <div className="flex-1 overflow-y-auto px-6 py-10 flex flex-col items-center text-center justify-center">
+          <p className="text-lg font-black text-[#1a365d]">Your PIVA session has ended. 💜</p>
+          <p className="text-sm text-slate-500 font-medium mt-2 max-w-[280px]">
+            You can start a new conversation whenever you need support.
+          </p>
+          <button
+            type="button"
+            onClick={startNewConversation}
+            className="mt-6 w-full max-w-[260px] py-3 rounded-full bg-[#0066cc] text-white text-sm font-bold shadow-sm shadow-blue-200 hover:bg-[#005bb8] transition-colors"
+          >
+            Start New Conversation
+          </button>
+        </div>
+      ) : null}
+
+      {confirmEnd ? (
+        <div
+          className="absolute inset-0 z-20 flex items-end sm:items-center justify-center bg-black/35 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="piva-end-title"
+        >
+          <div className="w-full max-w-sm rounded-2xl bg-white p-5 shadow-lg">
+            <h3 id="piva-end-title" className="text-base font-black text-[#1a365d]">
+              End this conversation?
+            </h3>
+            <p className="text-sm text-slate-500 font-medium mt-2">
+              Your conversation will be saved securely, but this active chat session will be closed.
+            </p>
+            <div className="mt-5 flex gap-2">
+              <button
+                type="button"
+                disabled={endingSession}
+                onClick={() => setConfirmEnd(false)}
+                className="flex-1 py-2.5 rounded-full border border-gray-200 text-sm font-bold text-[#1a365d] hover:bg-slate-50 disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={endingSession}
+                onClick={confirmEndSession}
+                className="flex-1 py-2.5 rounded-full bg-red-600 text-white text-sm font-bold hover:bg-red-700 disabled:opacity-50"
+              >
+                {endingSession ? "Ending..." : "End Session"}
+              </button>
+            </div>
+          </div>
+        </div>
       ) : null}
     </section>
   );

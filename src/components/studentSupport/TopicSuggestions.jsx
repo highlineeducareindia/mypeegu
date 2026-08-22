@@ -6,13 +6,17 @@ const TOPIC_COLORS = [
   "border-l-[#0066cc]/40",
 ];
 
-const TopicSuggestions = ({ topics = [], loading, onSelect, locationHint }) => {
+const TopicSuggestions = ({ topics = [], loading, onSelect, locationHint, continuing = false }) => {
   return (
     <div className="p-5 space-y-3">
       <div>
-        <h2 className="text-lg font-black text-[#1a365d]">What would you like to talk about?</h2>
+        <h2 className="text-lg font-black text-[#1a365d]">
+          {continuing ? "What else would you like to talk about?" : "What would you like to talk about?"}
+        </h2>
         <p className="text-sm text-slate-500 font-medium mt-1">
-          Pick a topic to begin, or choose "Something Else" to share in your own words.
+          {continuing
+            ? "Your chat stays open. Pick another topic…"
+            : 'Pick a topic to begin, or choose "Something Else" to share in your own words.'}
         </p>
         {locationHint ? (
           <p className="text-xs text-slate-400 font-medium mt-2">
