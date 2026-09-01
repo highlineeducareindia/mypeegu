@@ -18,6 +18,7 @@ import {
   sendSupportFeedback,
   endSupportSession,
 } from "./studentSupportApi";
+import { useInactivityPrompt } from "./useInactivityPrompt";
 
 const nextId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 
@@ -74,6 +75,12 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
   const inputRef = useRef(null);
   const continueModeRef = useRef("anonymous");
   const sessionReadyRef = useRef(Promise.resolve());
+
+  const { prompt: inactivityPrompt, dismiss: dismissInactivity } = useInactivityPrompt({
+    active: view === "chat",
+    loading,
+    age,
+  });
 
   useEffect(() => {
     const viewport = window.visualViewport;
@@ -238,6 +245,7 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
 
   /** Same active session: first topic or switch topic — keep history. */
   const startChat = (topic) => {
+    dismissInactivity();
     setView("chat");
     setConfirmEnd(false);
     setError("");
@@ -306,6 +314,7 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
     const text = (rawText || "").trim();
     if (!text || loading) return;
 
+    dismissInactivity();
     setMessages((prev) => [...prev, { id: nextId(), role: "student", text }]);
     setInput("");
     setError("");
@@ -394,7 +403,10 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
           rows={1}
           value={input}
           disabled={loading}
-          onChange={(event) => setInput(event.target.value)}
+          onChange={(event) => {
+            if (event.target.value.trim()) dismissInactivity();
+            setInput(event.target.value);
+          }}
           onKeyDown={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();
@@ -489,7 +501,12 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
       ) : null}
       {view === "chat" ? (
         <>
-          <ChatMessages messages={messages} loading={loading} status={status} />
+          <ChatMessages
+            messages={messages}
+            loading={loading}
+            status={status}
+            inactivityPrompt={inactivityPrompt}
+          />
           {composer}
         </>
       ) : null}
