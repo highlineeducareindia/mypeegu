@@ -186,6 +186,7 @@ export const sendSupportMessage = async ({ message, topicId } = {}) => {
     safetyEscalated: isSafety(payload),
     counsellorRecommended: shouldShowCounsellor(payload),
     counsellorPrompt: payload.counsellor?.prompt || payload.counsellorPrompt || "",
+    handedToCounsellor: Boolean(payload.counsellor?.handedToCounsellor || payload.handedToCounsellor),
   };
 };
 
@@ -228,6 +229,8 @@ export const requestCounsellor = async (body = {}) => {
     ),
     requestId: payload.requestId || payload.id || "",
     status: payload.status || "pending",
+    message: payload.message || "A MyPeegu counsellor will take this.",
+    handedToCounsellor: Boolean(payload.handedToCounsellor),
   };
 };
 

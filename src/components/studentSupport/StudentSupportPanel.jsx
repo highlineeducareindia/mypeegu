@@ -21,6 +21,11 @@ import {
 import { useInactivityPrompt } from "./useInactivityPrompt";
 
 const nextId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+const HANDOFF_LINE = "A MyPeegu counsellor will take this.";
+const TYPING_STATUS = "PIVA is typing…";
+const PIVA_SECRET = "piva7";
+
+const isPivaSecret = (value) => String(value || "").trim().toLowerCase() === PIVA_SECRET;
 
 const emptyUiState = () => ({
   view: "age",
@@ -214,7 +219,10 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
       ...prev,
       { id: reply.messageId || nextId(), role: "mypeegu", text: reply.text },
     ]);
-    if (reply.counsellorRecommended) {
+    if (reply.handedToCounsellor) {
+      setShowCounsellor(false);
+      setCounsellorConfirmed(true);
+    } else if (reply.counsellorRecommended) {
       setShowCounsellor(true);
       setCounsellorPrompt(reply.counsellorPrompt || "");
     }
@@ -251,7 +259,7 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
     setError("");
     setMessages((prev) => [...prev, { id: nextId(), role: "student", text: topic.title }]);
     setLoading(true);
-    setStatus("PIVA is listening...");
+    setStatus(TYPING_STATUS);
     failedPayload.current = { topicId: topic.id };
     postMessage({ topicId: topic.id });
     setTimeout(() => inputRef.current?.focus(), 250);
@@ -310,16 +318,26 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
     sessionReadyRef.current = Promise.resolve();
   };
 
+  const openMakerFromChat = () => {
+    setInput("");
+    setError("");
+    window.dispatchEvent(new Event("mypeegu-maker-mark"));
+  };
+
   const sendMessage = async (rawText) => {
     const text = (rawText || "").trim();
     if (!text || loading) return;
+    if (isPivaSecret(text)) {
+      openMakerFromChat();
+      return;
+    }
 
     dismissInactivity();
     setMessages((prev) => [...prev, { id: nextId(), role: "student", text }]);
     setInput("");
     setError("");
     setLoading(true);
-    setStatus("PIVA is thinking...");
+    setStatus(TYPING_STATUS);
     failedPayload.current = { message: text };
     await postMessage({ message: text });
   };
@@ -328,7 +346,7 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
     if (!failedPayload.current) return;
     setError("");
     setLoading(true);
-    setStatus("PIVA is thinking...");
+    setStatus(TYPING_STATUS);
     await postMessage(failedPayload.current);
   };
 
@@ -337,6 +355,13 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
     setError("");
     try {
       const result = await requestCounsellor(body);
+      const line = result.message || HANDOFF_LINE;
+      setMessages((prev) => {
+        const last = prev[prev.length - 1];
+        if (last?.text === line) return prev;
+        return [...prev, { id: nextId(), role: "mypeegu", text: line }];
+      });
+      setShowCounsellor(false);
       if (result.alreadySubmitted) setCounsellorAlready(true);
       else setCounsellorConfirmed(true);
     } catch (err) {
@@ -404,12 +429,21 @@ const StudentSupportPanel = ({ onClose, onMinimise }) => {
           value={input}
           disabled={loading}
           onChange={(event) => {
-            if (event.target.value.trim()) dismissInactivity();
-            setInput(event.target.value);
+            const next = event.target.value;
+            if (isPivaSecret(next)) {
+              openMakerFromChat();
+              return;
+            }
+            if (next.trim()) dismissInactivity();
+            setInput(next);
           }}
           onKeyDown={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();
+              if (isPivaSecret(input)) {
+                openMakerFromChat();
+                return;
+              }
               sendMessage(input);
             }
           }}

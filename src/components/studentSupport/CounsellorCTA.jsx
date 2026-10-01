@@ -49,9 +49,7 @@ const CounsellorCTA = ({
         >
           <X size={16} />
         </button>
-        {alreadySubmitted
-          ? "Your counsellor request is already submitted. You can keep chatting with PIVA."
-          : "Your counsellor request is submitted. A MyPeegu expert will reach out. You can keep chatting with PIVA."}
+        A MyPeegu counsellor will take this.
       </div>
     );
   }

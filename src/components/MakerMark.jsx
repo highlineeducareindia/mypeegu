@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const SECRET = "piva7";
 const WINDOW_MS = 1800;
+const OPEN_EVENT = "mypeegu-maker-mark";
 
 const WORK = [
   { label: "PIVA", detail: "Student intelligence assistant, part of the brand" },
@@ -24,6 +25,12 @@ const MakerMark = () => {
   const cardRef = useRef(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0, px: 62, py: 18 });
   const reveal = useCallback(() => setOpen(true), []);
+
+  useEffect(() => {
+    const onSecret = () => reveal();
+    window.addEventListener(OPEN_EVENT, onSecret);
+    return () => window.removeEventListener(OPEN_EVENT, onSecret);
+  }, [reveal]);
 
   useEffect(() => {
     let clicks = 0;
