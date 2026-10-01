@@ -60,12 +60,16 @@ const formatValidation = (errors) => {
   return String(errors);
 };
 
-const requestJson = async (url, { method = "POST", body, useAuth = false } = {}) => {
-  const res = await timeoutFetch(url, {
-    method,
-    headers: supportHeaders(useAuth),
-    body: body !== undefined ? JSON.stringify(body) : undefined,
-  });
+const requestJson = async (url, { method = "POST", body, useAuth = false, timeoutMs = 20000 } = {}) => {
+  const res = await timeoutFetch(
+    url,
+    {
+      method,
+      headers: supportHeaders(useAuth),
+      body: body !== undefined ? JSON.stringify(body) : undefined,
+    },
+    timeoutMs,
+  );
   const json = await parseJson(res);
   const payload = unwrapMessage(json);
 
@@ -168,6 +172,7 @@ export const sendSupportMessage = async ({ message, topicId } = {}) => {
   const payload = await requestJson(API_ENDPOINTS.STUDENT_SUPPORT_MESSAGE, {
     body,
     useAuth: true,
+    timeoutMs: 45000,
   });
 
   const botText = extractBotText(payload);
