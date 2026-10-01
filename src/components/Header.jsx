@@ -336,7 +336,7 @@ const Header = () => {
     <header className="sticky top-0 z-50 w-full bg-white shadow-sm border-b border-gray-100 font-sans">
       <div className="max-w-[92%] lg:max-w-[90%] xl:max-w-[88%] 2xl:max-w-[90%] mx-auto px-3 sm:px-4 lg:px-3 xl:px-6 2xl:px-8 py-3 flex items-center justify-between gap-2 lg:gap-3 xl:gap-4">
         <NavLink to="/" className="shrink-0">
-          <img src={logo} alt="My Peegu" className="h-11 sm:h-12 lg:h-11 xl:h-14 2xl:h-16 w-auto object-contain" />
+          <img data-maker-mark="logo" src={logo} alt="My Peegu" className="h-11 sm:h-12 lg:h-11 xl:h-14 2xl:h-16 w-auto object-contain" />
         </NavLink>
         <nav className="hidden lg:flex items-center space-x-2 lg:space-x-3 xl:space-x-6 2xl:space-x-8">
           {navLinks.slice(0, 2).map((link) => (
@@ -442,7 +442,7 @@ const Header = () => {
               className="fixed top-0 right-0 h-full w-[85%] max-w-[320px] bg-white text-[#1a2b4b] z-50 shadow-[-10px_0_30px_rgba(0,0,0,0.1)] flex flex-col overflow-hidden"
             >
               <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-50/50">
-                <img src={logo} alt="Logo" className="h-10 w-auto" />
+                <img data-maker-mark="logo" src={logo} alt="Logo" className="h-10 w-auto" />
                 <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-gray-100 rounded-full transition-colors text-[#1a2b4b]">
                   <X size={26} />
                 </button>

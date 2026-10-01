@@ -498,6 +498,7 @@ const MyPeeguActivationForm = () => {
         <div className="bg-white/90 backdrop-blur rounded-xl shadow-sm border border-gray-200 px-4 py-3 sm:px-5 sm:py-2 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-3 text-center sm:text-left">
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
             <img
+              data-maker-mark="logo"
               src={logo}
               alt="MyPeegu"
               className="h-16 w-16 sm:h-20 sm:w-20 object-contain shrink-0"

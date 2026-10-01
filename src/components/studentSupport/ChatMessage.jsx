@@ -8,6 +8,7 @@ const ChatMessage = ({ role, text }) => {
     <div className={`flex gap-2 ${isMyPeegu ? "justify-start" : "justify-end"}`}>
       {isMyPeegu ? (
         <img
+          data-maker-mark="piva"
           src={logo}
           alt=""
           className="h-7 w-7 mt-1 rounded-full object-contain bg-white border border-gray-100 shrink-0"
@@ -21,7 +22,7 @@ const ChatMessage = ({ role, text }) => {
         }`}
       >
         {isMyPeegu ? (
-          <p className="text-[10px] font-black uppercase tracking-wider text-[#0066cc] mb-1">PIVA</p>
+          <p data-maker-mark="piva" className="text-[10px] font-black uppercase tracking-wider text-[#0066cc] mb-1">PIVA</p>
         ) : null}
         {text}
       </div>

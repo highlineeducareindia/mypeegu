@@ -74,7 +74,7 @@ const Footer = () => {
           
           {/* Brand Column */}
           <div className="lg:col-span-2 space-y-5">
-            <img src={logo} alt="My Peegu" className="h-12 w-auto mb-2" />
+            <img data-maker-mark="logo" src={logo} alt="My Peegu" className="h-12 w-auto mb-2" />
             <p className="text-slate-500 text-[15px] leading-relaxed max-w-xs font-medium">
               {settings?.footer_description || "Helping every student find their orbit and become the star they are meant to be."}
             </p>

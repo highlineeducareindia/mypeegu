@@ -13,9 +13,9 @@ const StudentSupportHeader = ({
   return (
     <header className="shrink-0 border-b border-gray-100 bg-white">
       <div className="flex items-center gap-3 px-4 py-3">
-        <img src={logo} alt="" className="h-9 w-auto object-contain" />
+        <img data-maker-mark="piva" src={logo} alt="" className="h-9 w-auto object-contain" />
         <div className="min-w-0 flex-1">
-          <p className="text-[15px] font-black text-[#1a365d] leading-tight">PIVA</p>
+          <p data-maker-mark="piva" className="text-[15px] font-black text-[#1a365d] leading-tight">PIVA</p>
           <p className="text-[11px] text-slate-500 font-medium truncate">
             {status || "MyPeegu Virtual Assistant"}
           </p>
