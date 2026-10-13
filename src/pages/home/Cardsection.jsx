@@ -1,34 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import Button from "../../components/Button";
 import { Link } from "react-router-dom";
-import { API_ENDPOINTS } from "../../config/api";
+import ctaLogo from "../../assets/MyPeeguLogo.png"; 
+
+const ctaData = {
+  title: "A world of adventure awaits.",
+  button_text: "Learn More",
+  button_link: "/careers-community",
+  image_url: ctaLogo,
+};
 
 const Cardsection = () => {
-  const [ctaData, setCtaData] = useState({
-    title: "",
-    button_text: "",
-    button_link: "",
-    image_url: ""
-  });
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch(API_ENDPOINTS.CTA_SECTION)
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.success) {
-          setCtaData(result.data);
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching CTA Data:", err);
-        setLoading(false);
-      });
-  }, []);
-  if (loading) return <div className="min-h-[430px] flex items-center justify-center">Loading...</div>;
-
   return (
     <div>
       {/* card section */}
@@ -48,7 +31,7 @@ const Cardsection = () => {
           />
           
           <div className="relative z-10 mb-6 group">
-            {/* Dynamic Image */}
+            {/* Image */}
             {ctaData.image_url && (
               <motion.img
                 initial={{ y: 10, opacity: 0 }}
@@ -62,12 +45,12 @@ const Cardsection = () => {
           </div>
           
           <div className="relative z-10 text-center max-w-2xl">
-            {/* Dynamic Title */}
+            {/* Title */}
             <h1 className="text-3xl md:text-4xl lg:text-4xl font-black text-[#1a365d] tracking-tight mb-8">
-              {ctaData.title || "A world of adventure awaits."}
+              {ctaData.title}
             </h1>
             
-            {/* Dynamic Button Text and Link */}
+            {/* Button Component */}
             {ctaData.button_link && ctaData.button_text && (
               <Link to={ctaData.button_link}>
                 <Button>{ctaData.button_text}</Button>

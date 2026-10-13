@@ -9,7 +9,6 @@ import {
   FaStar // Fallback icon
 } from "react-icons/fa"; // Aap chaho toh fa6 bhi use kar sakte ho
 
-// Dictionary to convert DB string to actual React Icon
 const IconMap = {
   FaGraduationCap: FaGraduationCap,
   FaChalkboardTeacher: FaChalkboardTeacher,

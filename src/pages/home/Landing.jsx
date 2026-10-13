@@ -1,24 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { API_ENDPOINTS } from "../../config/api"; 
 
-const getBgStyle = (bgClass) => {
-  if (!bgClass || bgClass.trim() === '') return { backgroundColor: '#3b82f6' }; 
+import React from 'react';
 
-  const str = bgClass.toLowerCase();
-  
-  if (str.includes('blue')) return { backgroundColor: '#60a5fa' }; 
-  if (str.includes('red')) return { backgroundColor: '#ef4444' };
-  if (str.includes('green')) return { backgroundColor: '#22c55e' };
-  if (str.includes('yellow') || str.includes('amber')) return { backgroundColor: '#f59e0b' };
-  if (str.includes('purple') || str.includes('indigo')) return { backgroundColor: '#8b5cf6' };
-  if (str.includes('orange')) return { backgroundColor: '#f97316' };
-  if (str.includes('pink')) return { backgroundColor: '#ec4899' };
-  if (str.includes('teal') || str.includes('cyan')) return { backgroundColor: '#06b6d4' };
+// Local Feature Images Imports (Aapke VS Code folder ke mutabiq)
+import img1 from "../../assets/feature/img1.png";
+import img2 from "../../assets/feature/img2.png";
+import img3 from "../../assets/feature/img3.png";
+import img4 from "../../assets/feature/img4.png";
 
-  // Ultimate Fallback
-  return { backgroundColor: '#3b82f6' }; 
-};
-
+/* ─── 1. Dotted Loop Connector ─── */
 const LoopConnector = ({ flip = false }) => {
   const path = flip
     ? `M 1200 30 C 900 -20, 600 80, 400 140 C 200 200, 100 130, 120 80 C 140 30, 200 20, 240 60 C 280 100, 260 170, 180 200 C 80 240, -50 280, -100 340`
@@ -33,9 +22,10 @@ const LoopConnector = ({ flip = false }) => {
   );
 };
 
+/* ─── 2. Section Wrapper ─── */
 const SectionWrapper = ({ imageSrc, title, description, icon, imageLeft = true, bgColor = "bg-white" }) => {
   return (
-    <section className={`relative z-10 flex flex-col md:flex-row items-center justify-between px-8 md:px-32  ${bgColor}`}>
+    <section className={`relative z-10 flex flex-col md:flex-row items-center justify-between px-8 md:px-32 ${bgColor}`}>
       {/* Image Container */}
       <div className={`relative z-20 w-full md:w-1/2 flex justify-center mb-8 md:mb-0 ${imageLeft ? 'order-1' : 'order-1 md:order-2'}`}>
         <img 
@@ -47,13 +37,12 @@ const SectionWrapper = ({ imageSrc, title, description, icon, imageLeft = true, 
 
       {/* Text Container */}
       <div className={`w-full md:w-1/2 ${imageLeft ? 'md:pl-16 order-2' : 'md:pr-16 order-2 md:order-1'}`}>
-      
         <div style={icon.style} className="w-14 h-14 rounded-full flex items-center justify-center mb-6 shadow-lg text-white">
           {icon.svg}
         </div>
         
         <h2 className="text-3xl md:text-3xl font-extrabold text-[#1a365d] leading-tight mb-5" dangerouslySetInnerHTML={{ __html: title }} />
-        <p className="text-slate-600 leading-relaxed  text-[17px] max-w-md">
+        <p className="text-slate-600 leading-relaxed text-[17px] max-w-md">
           {description}
         </p>
       </div>
@@ -61,46 +50,73 @@ const SectionWrapper = ({ imageSrc, title, description, icon, imageLeft = true, 
   );
 };
 
-/* ─── 2. Icons Data Dictionary ─── */
+/* ─── 3. SVG Icons ─── */
 const Icons = {
-  chat: <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" /></svg>,
-  window: <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7"><path d="M21 3H3C2 3 1 4 1 5v14c0 1 1 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2zm0 16H3V5h18v14zM5 15l4-5 3 4 2-2 4 5H5z" /></svg>,
-  calendar: <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7"><path d="M19 3h-1V1h-2v2H8V1H6v2H5C3.9 3 3 3.9 3 5v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H5V9h14v12zM5 7V5h14v2H5zm2 4h10v2H7zm0 4h7v2H7z" /></svg>,
-  toolkit: <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7"><path d="M20.71 4.63l-1.34-1.34a1 1 0 00-1.41 0L9 12.25 11.75 15l8.96-8.96a1 1 0 000-1.41zM7 14l-3 3 1 3 3-1 .75-.75L6.25 15.5 7 14zm-4.5 5.5L5 21l-2 1-1-1 1-2z" /></svg>,
-  play: <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" /></svg>
+  chat: (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7">
+      <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
+    </svg>
+  ),
+  image: (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7">
+      <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+    </svg>
+  ),
+  calendar: (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7">
+      <path d="M19 3h-1V1h-2v2H8V1H6v2H5C3.9 3 3 3.9 3 5v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H5V9h14v12zM5 7V5h14v2H5zm2 4h10v2H7zm0 4h7v2H7z" />
+    </svg>
+  ),
+  shield: (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7">
+      <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
+    </svg>
+  )
 };
 
-/* ─── 3. Main Page Component ─── */
+/* ─── 4. Exact Static Content ─── */
+const staticFeatures = [
+  {
+    id: 1,
+    image_url: img1,
+    title: "Building Emotionally Intelligent Learners",
+    description: "Our SEL framework helps students understand emotions, manage challenges, and develop healthy relationships. Through a structured four-year progression, children gradually strengthen awareness, regulation, responsibility, and purpose. Interactive sessions and real-life applications make these skills part of everyday school life. Students grow into thoughtful individuals capable of making responsible and compassionate choices.",
+    icon_bg: "#3b82f6",
+    icon_svg: Icons.chat,
+  },
+  {
+    id: 2,
+    image_url: img2,
+    title: "Understand Behaviour— Earlier",
+    description: "MyPeegu's intelligent system helps schools identify emotional and behavioural patterns before they escalate. Structured insights support educators in guiding SEL learning, targeted interventions, and student growth. AI organises the data—while counsellors and educators shape the journey.",
+    icon_bg: "#f97316",
+    icon_svg: Icons.image,
+  },
+  {
+    id: 3,
+    image_url: img3,
+    title: "Guided Interventions— When It Matters Most",
+    description: "Our psychoeducational workshops and guided interventions help schools address emotional, behavioural, and developmental challenges with clarity and care. Students, educators, and parents receive structured guidance from trained MyPeegu experts. Each program is aligned with the school's SEL pathway and behavioural insights. Together, these interventions strengthen emotional resilience across the entire school ecosystem.",
+    icon_bg: "#8b5cf6",
+    icon_svg: Icons.calendar,
+  },
+  {
+    id: 4,
+    image_url: img4,
+    title: "Secure Insights<br />Responsible Governance.",
+    description: "MyPeegu organises behavioural observations, SEL progress, and intervention data into meaningful institutional insights. Sensitive student information is protected through secure data systems and carefully governed access. Leadership teams gain clarity on developmental trends and intervention outcomes while maintaining strict confidentiality standards. With responsible governance and secure technology, schools can act on insights while safeguarding student trust.",
+    icon_bg: "#ef4444",
+    icon_svg: Icons.shield,
+  },
+];
+
 export default function Landing() {
-  const [features, setFeatures] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch(API_ENDPOINTS.FEATURES)
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.success) {
-          setFeatures(result.data);
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch error:", err);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) return <div className="py-10 text-center text-gray-500 font-bold">Loading Features...</div>;
-
   return (
     <div className="font-sans antialiased bg-white overflow-x-hidden max-w-7xl mx-auto py-16 overflow-hidden">
-      
-      {features.map((feature, index) => {
+      {staticFeatures.map((feature, index) => {
         const isImageLeft = index % 2 === 0;
-        const showConnector = index < features.length - 1;
+        const showConnector = index < staticFeatures.length - 1;
         const isFlipped = !isImageLeft;
-        const rawIconName = feature.icon_name ? feature.icon_name.toLowerCase().trim() : 'chat';
-        const finalIconSVG = Icons[rawIconName] || Icons.chat;
 
         return (
           <React.Fragment key={feature.id}>
@@ -109,8 +125,8 @@ export default function Landing() {
               title={feature.title}
               description={feature.description}
               icon={{ 
-                style: getBgStyle(feature.icon_bg), 
-                svg: finalIconSVG
+                style: { backgroundColor: feature.icon_bg }, 
+                svg: feature.icon_svg
               }}
               imageLeft={isImageLeft}
             />
@@ -118,7 +134,6 @@ export default function Landing() {
           </React.Fragment>
         );
       })}
-
     </div>
   );
 }

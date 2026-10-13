@@ -1,48 +1,64 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import CountUp from "react-countup";
-import { API_ENDPOINTS } from "../../config/api";
-import { icons } from "lucide-react";
+import {
+  UserCheck,
+  Users,
+  GraduationCap,
+  Building2,
+  UserCog,
+} from "lucide-react";
 
-// Dynamic Icon Renderer
-const DynamicIcon = ({ name, className, strokeWidth }) => {
-  const IconComponent = icons[name] || icons["Star"];
-  return <IconComponent className={className} strokeWidth={strokeWidth} />;
+const headerData = {
+  badge_text: "OUR IMPACT",
+  main_heading: "Trusted by",
+  highlight_text: "Thousands Worldwide",
 };
+
+const statsData = [
+  {
+    id: 1,
+    icon: UserCheck,
+    number_value: 20000,
+    label: "TEACHERS",
+    gradient_class: "from-blue-400 to-blue-600",
+  },
+  {
+    id: 2,
+    icon: Users,
+    number_value: 250000,
+    label: "PARENTS",
+    gradient_class: "from-amber-400 to-amber-500",
+  },
+  {
+    id: 3,
+    icon: GraduationCap,
+    number_value: 750000,
+    label: "STUDENTS",
+    gradient_class: "from-red-400 to-rose-500",
+  },
+  {
+    id: 4,
+    icon: Building2,
+    number_value: 750,
+    label: "SCHOOLS",
+    gradient_class: "from-emerald-400 to-teal-500",
+  },
+  {
+    id: 5,
+    icon: UserCog,
+    number_value: 140,
+    label: "COUNSELLORS & SPECIAL EDUCATORS",
+    gradient_class: "from-sky-400 to-blue-500",
+  },
+];
 
 const StatSection = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
-
-  const [headerData, setHeaderData] = useState(null);
-  const [stats, setStats] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch(API_ENDPOINTS.STATS)
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.success) {
-          setHeaderData(result.header);
-          setStats(result.items);
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching Stats data:", err);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading)
-    return (
-      <div className="py-10 bg-[#F8FAFC] min-h-[40vh] flex items-center justify-center text-slate-500 font-bold">
-        Loading Impact Numbers...
-      </div>
-    );
 
   return (
     <section className="relative py-10 bg-[#F8FAFC] overflow-hidden">
@@ -51,38 +67,37 @@ const StatSection = () => {
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-50 rounded-full blur-[120px] opacity-60 pointer-events-none" />
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Dynamic Header */}
-        {headerData && (
-          <div className="text-center mb-8 md:mb-8">
-            <motion.span
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              className="inline-block px-3 py-1 md:px-4 md:py-1.5 mb-2 md:mb-4 text-[10px] md:text-xs font-bold tracking-widest text-[#FEBF48] uppercase bg-blue-50/50 rounded-full border border-blue-100/50"
-            >
-              {headerData.badge_text}
-            </motion.span>
+        {/* Header */}
+        <div className="text-center mb-8 md:mb-8">
+          <motion.span
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-block px-3 py-1 md:px-4 md:py-1.5 mb-2 md:mb-4 text-[10px] md:text-xs font-bold tracking-widest text-[#FEBF48] uppercase bg-blue-50/50 rounded-full border border-blue-100/50"
+          >
+            {headerData.badge_text}
+          </motion.span>
 
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              className="text-2xl md:text-4xl font-extrabold text-[#1a365d] tracking-tight leading-tight px-2"
-            >
-              {headerData.main_heading} <br className="block md:hidden" />
-              <span className="text-[#0066CC] pl-1">
-                {headerData.highlight_text}
-              </span>
-            </motion.h2>
-          </div>
-        )}
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-2xl md:text-4xl font-extrabold text-[#1a365d] tracking-tight leading-tight px-2"
+          >
+            {headerData.main_heading} <br className="block md:hidden" />
+            <span className="text-[#0066CC] pl-1">
+              {headerData.highlight_text}
+            </span>
+          </motion.h2>
+        </div>
 
-        {/* Dynamic Grid */}
+        {/* Grid (5 Cards) */}
         <div
           ref={ref}
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6"
         >
-          {stats.map((stat, index) => {
-            const safeGradient =
-              stat.gradient_class || "from-blue-500 to-indigo-600";
+          {statsData.map((stat, index) => {
+            const IconComponent = stat.icon;
 
             return (
               <motion.div
@@ -92,16 +107,18 @@ const StatSection = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 whileHover={{ y: -8 }}
-                className={`relative group ${index === stats.length - 1 && stats.length % 2 !== 0 ? "col-span-2 md:col-span-1" : ""}`}
+                className={`relative group ${
+                  index === statsData.length - 1 && statsData.length % 2 !== 0
+                    ? "col-span-2 md:col-span-1"
+                    : ""
+                }`}
               >
                 <div className="h-full bg-white/70 backdrop-blur-md border border-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.04)] transition-all duration-300 group-hover:shadow-[0_30px_60px_rgba(0,0,0,0.08)] group-hover:bg-white flex flex-col items-center text-center">
-                  {/* BACKGROUND COLOR & ICON CONTAINER */}
+                  {/* ICON CONTAINER */}
                   <div
-                    className={`inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br ${safeGradient} text-white mb-4 md:mb-5 shadow-lg transform group-hover:scale-110 transition-transform duration-300`}
+                    className={`inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br ${stat.gradient_class} text-white mb-4 md:mb-5 shadow-lg transform group-hover:scale-110 transition-transform duration-300`}
                   >
-                    {/* Yahan aapka Lucide icon render hoga */}
-                    <DynamicIcon
-                      name={stat.icon_name}
+                    <IconComponent
                       className="w-6 h-6 md:w-7 md:h-7"
                       strokeWidth={2.5}
                     />
@@ -111,10 +128,10 @@ const StatSection = () => {
                     <h3 className="text-xl md:text-3xl font-black text-slate-800 tracking-tight">
                       {inView && (
                         <CountUp
-                          end={parseInt(stat.number_value) || 0}
+                          end={stat.number_value}
                           duration={2.5}
                           separator=","
-                          suffix={parseInt(stat.number_value) >= 100 ? "+" : ""}
+                          suffix="+"
                         />
                       )}
                     </h3>
@@ -125,7 +142,7 @@ const StatSection = () => {
 
                   {/* Bottom aesthetic line */}
                   <div
-                    className={`absolute bottom-0 left-4 right-4 h-1 bg-gradient-to-r ${safeGradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-full`}
+                    className={`absolute bottom-0 left-4 right-4 h-1 bg-gradient-to-r ${stat.gradient_class} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-full`}
                   />
                 </div>
               </motion.div>

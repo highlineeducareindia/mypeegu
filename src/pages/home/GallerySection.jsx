@@ -1,5 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { API_ENDPOINTS } from "../../config/api"; // Config import
+
+import studentImg1 from "../../assets/hero/student1 (1).jpg";
+import studentImg2 from "../../assets/hero/student1 (2).jpg";
+import studentImg3 from "../../assets/hero/student1 (3).jpg";
+import studentImg4 from "../../assets/hero/student1 (4).jpg";
+import studentImg5 from "../../assets/hero/student1 (5).jpg";
+import studentImg6 from "../../assets/hero/student1 (6).jpg";
+import studentImg7 from "../../assets/hero/student1 (7).jpg";
+import studentImg8 from "../../assets/hero/student1 (8).jpg";
+import studentImg9 from "../../assets/hero/student1 (9).jpg";
+
+const staticImages = [
+  studentImg1,
+  studentImg2,
+  studentImg3,
+  studentImg4,
+  studentImg5,
+  studentImg6,
+  studentImg7,
+  studentImg8,
+  studentImg9,
+];
 
 const StarRating = () => (
   <div className="flex gap-1 justify-center">
@@ -34,7 +55,7 @@ const ImgCard = ({
   delay = "0s",
   isVisible,
 }) => {
-  if (!src) return <div className={`w-full ${className}`}></div>; // Agar image nahi
+  if (!src) return <div className={`w-full ${className}`}></div>;
 
   return (
     <div
@@ -62,22 +83,13 @@ const ImgCard = ({
 
 export default function GallerySection() {
   const [isVisible, setIsVisible] = useState(false);
-  const [images, setImages] = useState([]);
 
   useEffect(() => {
     setIsVisible(true);
-
-    // API Call
-    fetch(API_ENDPOINTS.GALLERY)
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.success) setImages(result.data);
-      })
-      .catch((err) => console.error("Error fetching gallery:", err));
   }, []);
 
-  const getImgSrc = (index) => images[index]?.image_url || null;
-  const getImgAlt = (index) => images[index]?.alt_text || "Workshop Image";
+  const getImgSrc = (index) => staticImages[index] || null;
+  const getImgAlt = (index) => `Workshop Image ${index + 1}`;
 
   return (
     <section className="relative min-h-screen w-full flex flex-col items-center justify-center py-10 px-4 md:px-6 overflow-hidden bg-[linear-gradient(155deg,#eef2ff_0%,#ffffff_48%,#f5f0ff_100%)] font-sans">

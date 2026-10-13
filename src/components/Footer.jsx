@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   FaPhoneAlt, 
@@ -11,20 +11,8 @@ import {
   FaWhatsapp
 } from 'react-icons/fa';
 import logo from "../assets/MyPeeguLogo.png"; 
-import { API_ENDPOINTS } from "../config/api";
 
 const Footer = () => {
-  const [settings, setSettings] = useState(null);
-
-  useEffect(() => {
-    fetch(API_ENDPOINTS.GLOBAL_SETTINGS)
-      .then(res => res.json())
-      .then(result => {
-        if(result.success) setSettings(result.data);
-      })
-      .catch(err => console.error("Error fetching Global Settings:", err));
-  }, []);
-
   const footerSections = [
     {
       title: "Quick Links",
@@ -39,7 +27,6 @@ const Footer = () => {
     {
       title: "Student Development",
       links: [
-        // Added Hashes (#) to target specific sections on the page
         { name: "Emotional Foundations", path: "/solution/student-development#workshop-1" },
         { name: "Regulation & Relationships", path: "/solution/student-development#workshop-2" },
         { name: "Reflection & Decision Making", path: "/solution/student-development#workshop-3" },
@@ -66,6 +53,13 @@ const Footer = () => {
     }
   ];
 
+  const socialLinks = [
+    { Icon: FaFacebookF, href: "#" },
+    { Icon: FaTwitter, href: "#" },
+    { Icon: FaInstagram, href: "https://www.instagram.com/my_peegu?rpxt=Nmd0OWEyMjJuYnZz" },
+    { Icon: FaLinkedinIn, href: "https://www.linkedin.com/in/chetan-jaiswal-959374105/" },
+  ];
+
   return (
     <footer className="bg-white pt-10 pb-4 border-t border-slate-100 font-sans antialiased">
       <div className="max-w-7xl mx-auto px-6">
@@ -76,11 +70,17 @@ const Footer = () => {
           <div className="lg:col-span-2 space-y-5">
             <img data-maker-mark="logo" src={logo} alt="My Peegu" className="h-12 w-auto mb-2" />
             <p className="text-slate-500 text-[15px] leading-relaxed max-w-xs font-medium">
-              {settings?.footer_description || "Helping every student find their orbit and become the star they are meant to be."}
+              Helping every student find their orbit and become the star they are meant to be. The future of adventure-based learning.
             </p>
             <div className="flex gap-3 pt-2">
-              {[FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn].map((Icon, i) => (
-                <a key={i} href="#" className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:text-[#0066CC] hover:border-[#0066CC] transition-all duration-300">
+              {socialLinks.map(({ Icon, href }, i) => (
+                <a 
+                  key={i} 
+                  href={href} 
+                  target={href !== "#" ? "_blank" : undefined}
+                  rel={href !== "#" ? "noopener noreferrer" : undefined}
+                  className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:text-[#0066CC] hover:border-[#0066CC] transition-all duration-300"
+                >
                   <Icon size={14} />
                 </a>
               ))}
@@ -120,20 +120,20 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex flex-wrap justify-center md:justify-start gap-10">
             <div className="flex items-center gap-4 group">
-  <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-[#25D366] group-hover:bg-[#25D366] group-hover:text-white transition-all duration-300">
-    <FaWhatsapp size={16} />
-  </div>
-  <div>
-    <a
-      href={`https://wa.me/${(settings?.phone || "919035524865").replace(/\D/g, "")}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block text-slate-800 font-bold text-sm tracking-tight hover:text-[#25D366]"
-    >
-      {settings?.phone || "+91 9035524865"}
-    </a>
-  </div>
-</div>
+              <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-[#25D366] group-hover:bg-[#25D366] group-hover:text-white transition-all duration-300">
+                <FaWhatsapp size={16} />
+              </div>
+              <div>
+                <a
+                  href="https://wa.me/919035524865"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-slate-800 font-bold text-sm tracking-tight hover:text-[#25D366]"
+                >
+                  +91 9035524865
+                </a>
+              </div>
+            </div>
 
             <div className="flex items-center gap-4 group">
               <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-[#E13928] group-hover:bg-[#E13928] group-hover:text-white transition-all duration-300">
@@ -151,7 +151,7 @@ const Footer = () => {
           </div>
 
           <div className="text-slate-400 text-xs font-bold tracking-tight text-center md:text-right">
-            {settings?.copyright_text || `© ${new Date().getFullYear()} MyPeegu. All Rights Reserved.`}
+            © {new Date().getFullYear()} MyPeegu. All Rights Reserved.
           </div>
         </div>
       </div>
