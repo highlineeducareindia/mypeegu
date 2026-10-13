@@ -1,49 +1,19 @@
-// const BASE_URL = "https://arsh.opserv.in/mypeegu/api"; 
-// const BASE_URL_DEV = "https://app.mypeegu.com/api";
-// // const BASE_URL_DEV = "http://localhost:3004/api";
+// const BASE_URL = "http://localhost:3004/api";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://app.mypeegu.com/api";
 
-// export const API_ENDPOINTS = {
-//   AWARDS: `${BASE_URL}/awards?action=fetch`, 
-//   CTA_SECTION: `${BASE_URL}/get_cta`,
-//   FEATURES: `${BASE_URL}/features?action=fetch`,
-//   PARTNERS: `${BASE_URL}/partners?action=fetch`, 
-//   GALLERY: `${BASE_URL}/gallery?action=fetch`, 
-//   HERO: `${BASE_URL}/hero?action=fetch`,
-//   COMMUNITY: `${BASE_URL}/community?action=fetch`,
-//   BOOKING_SECTION: `${BASE_URL}/booking`,
-//   PILLARS: `${BASE_URL}/pillars`,
-//   STATS: `${BASE_URL}/stats`,
-//   TESTIMONIALS: `${BASE_URL}/testimonials`,
-//   APPROACH: `${BASE_URL}/approach`,
-//   ARCHITECTURE: `${BASE_URL}/architecture`,
-//   PARENTS_PAGE: `${BASE_URL}/parents`,
-//   STUDENTS_PAGE: `${BASE_URL}/students`,
-//   TEACHERS: `${BASE_URL}/teachers`,
-//   PATHWAYS: `${BASE_URL}/pathways`,
-//   TRIBE_PAGE: `${BASE_URL}/tribe`,
-//   GLOBAL_SETTINGS: `${BASE_URL}/settings`,
-//   CONTACT_SUBMIT: `${BASE_URL}/contact`,
-//   STUDENT_SUPPORT_SESSION: `${BASE_URL_DEV}/student-support/session`,
-//   STUDENT_SUPPORT_PROFILE: `${BASE_URL_DEV}/student-support/profile`,
-//   STUDENT_SUPPORT_MESSAGE: `${BASE_URL_DEV}/student-support/message`,
-//   STUDENT_SUPPORT_COUNSELLOR: `${BASE_URL_DEV}/student-support/counsellor-request`,
-//   STUDENT_SUPPORT_FEEDBACK: `${BASE_URL_DEV}/student-support/feedback`,
-// };
+export const studentSupportSessionById = (sessionId) =>
+  `${BASE_URL}/student-support/session/${sessionId}`;
 
-// export const studentSupportSessionById = (sessionId) =>
-//   `${BASE_URL_DEV}/student-support/session/${sessionId}`;
-
-// export const studentSupportEndSession = (sessionId) =>
-//   `${BASE_URL_DEV}/student-support/session/${sessionId}/end`;
-
-
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-if (!BASE_URL) {
-  console.error("CRITICAL: VITE_API_BASE_URL is not defined in your .env file!");
-}
+export const studentSupportEndSession = (sessionId) =>
+  `${BASE_URL}/student-support/session/${sessionId}/end`;
 
 export const API_ENDPOINTS = {
   CONTACT_SUBMIT: `${BASE_URL}/contact`,
+  CAREER_SUBMIT: `${BASE_URL}/careers`,
   ADMIN_INQUIRIES: `${BASE_URL}/admin/inquiries`,
+  STUDENT_SUPPORT_SESSION: `${BASE_URL}/student-support/session`,
+  STUDENT_SUPPORT_PROFILE: `${BASE_URL}/student-support/profile`,
+  STUDENT_SUPPORT_MESSAGE: `${BASE_URL}/student-support/message`,
+  STUDENT_SUPPORT_COUNSELLOR: `${BASE_URL}/student-support/counsellor-request`,
+  STUDENT_SUPPORT_FEEDBACK: `${BASE_URL}/student-support/feedback`,
 };

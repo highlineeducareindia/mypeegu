@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
   ShieldCheck,
@@ -20,12 +20,118 @@ import HeroSection from "../../components/HeroSection";
 import img1 from "../../assets/career/1.png";
 import img2 from "../../assets/career/2.png";
 import img3 from "../../assets/career/3.png";
+import { API_ENDPOINTS } from "../../config/api";
+
+const emptyCareerForm = {
+  name: "",
+  email: "",
+  phone: "",
+};
+
 const Career = () => {
+  const [formData, setFormData] = useState(emptyCareerForm);
+  const [resume, setResume] = useState(null);
+  const [status, setStatus] = useState({
+    loading: false,
+    message: "",
+    isError: false,
+  });
+
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
     transition: { duration: 0.6 },
+  };
+
+  const handleCareerChange = (event) => {
+    setFormData((current) => ({
+      ...current,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  const handleResumeChange = (event) => {
+    const file = event.target.files?.[0] || null;
+    if (!file) {
+      setResume(null);
+      return;
+    }
+
+    const extension = file.name.split(".").pop()?.toLowerCase();
+    if (extension !== "pdf" && extension !== "docx") {
+      setResume(null);
+      event.target.value = "";
+      setStatus({
+        loading: false,
+        message: "Only PDF and DOCX files are allowed.",
+        isError: true,
+      });
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setResume(null);
+      event.target.value = "";
+      setStatus({
+        loading: false,
+        message: "Resume must be 5MB or smaller.",
+        isError: true,
+      });
+      return;
+    }
+
+    setResume(file);
+    setStatus({ loading: false, message: "", isError: false });
+  };
+
+  const handleCareerSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!formData.name || !formData.email || !formData.phone || !resume) {
+      setStatus({
+        loading: false,
+        message: "Please fill all required fields and upload your resume.",
+        isError: true,
+      });
+      return;
+    }
+
+    setStatus({ loading: true, message: "", isError: false });
+
+    try {
+      const body = new FormData();
+      body.append("name", formData.name);
+      body.append("email", formData.email);
+      body.append("phone", formData.phone);
+      body.append("resume", resume);
+
+      const response = await fetch(API_ENDPOINTS.CAREER_SUBMIT, {
+        method: "POST",
+        body,
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        setFormData(emptyCareerForm);
+        setResume(null);
+        event.target.reset();
+        setStatus({ loading: false, message: data.message, isError: false });
+        return;
+      }
+
+      setStatus({
+        loading: false,
+        message: data.message || "Unable to submit application.",
+        isError: true,
+      });
+    } catch (error) {
+      setStatus({
+        loading: false,
+        message: "Server error. Please verify backend connection.",
+        isError: true,
+      });
+    }
   };
 
   return (
@@ -396,30 +502,53 @@ const Career = () => {
 
           <form
             className="space-y-4 max-w-2xl mx-auto w-full bg-slate-50/50 p-6 md:p-6 rounded-3xl border border-slate-100"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleCareerSubmit}
           >
             <div className="grid md:grid-cols-2 gap-5">
-              <InputGroup type="text" placeholder="Full Name" icon={Users} />
+              <InputGroup
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                icon={Users}
+                value={formData.name}
+                onChange={handleCareerChange}
+                required
+              />
               <InputGroup
                 type="email"
+                name="email"
                 placeholder="Professional Email"
                 icon={Send}
+                value={formData.email}
+                onChange={handleCareerChange}
+                required
               />
             </div>
-            <InputGroup type="tel" placeholder="Contact Number" icon={Zap} />
+            <InputGroup
+              type="tel"
+              name="phone"
+              placeholder="Contact Number"
+              icon={Zap}
+              value={formData.phone}
+              onChange={handleCareerChange}
+              required
+            />
 
             <div className="relative group">
               <input
                 type="file"
+                name="resume"
+                accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+                onChange={handleResumeChange}
               />
               <div className="flex items-center gap-4 p-4 bg-white border-2 border-dashed border-slate-200 rounded-xl group-hover:border-blue-400 group-hover:bg-blue-50/30 transition-all">
                 <div className="bg-blue-50 p-2.5 rounded-lg shadow-sm text-blue-600 group-hover:scale-110 transition-transform">
                   <Upload size={20} />
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col text-left">
                   <span className="text-slate-700 font-medium text-sm">
-                    Upload Resume / CV
+                    {resume ? resume.name : "Upload Resume / CV"}
                   </span>
                   <span className="text-slate-400 text-xs">
                     PDF, DOCX up to 5MB
@@ -428,12 +557,23 @@ const Career = () => {
               </div>
             </div>
 
+            {status.message ? (
+              <p
+                className={`text-sm text-center font-medium ${
+                  status.isError ? "text-red-600" : "text-green-600"
+                }`}
+              >
+                {status.message}
+              </p>
+            ) : null}
+
             <div className="pt-6 text-center">
               <Button
                 type="submit"
+                disabled={status.loading}
                 className="w-full md:w-auto px-12 py-4 rounded-full bg-[#1E88E5] text-white font-bold hover:bg-[#1565C0] shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all hover:-translate-y-1"
               >
-                Submit Application
+                {status.loading ? "Submitting..." : "Submit Application"}
               </Button>
             </div>
           </form>

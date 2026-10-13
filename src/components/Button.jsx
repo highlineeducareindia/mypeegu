@@ -1,11 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const Button = ({ children, onClick, className = "" }) => {
+const Button = ({ children, onClick, className = "", type, disabled = false }) => {
   return (
     <button
+      type={type}
+      disabled={disabled}
       onClick={onClick}
-      className={`relative px-8 py-3 font-bold text-white transition-all duration-500 rounded-full group overflow-hidden bg-[#0066cc] shadow-sm shadow-blue-200 active:scale-95 ${className}`}
+      className={`relative px-8 py-3 font-bold text-white transition-all duration-500 rounded-full group overflow-hidden bg-[#0066cc] shadow-sm shadow-blue-200 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed ${className}`}
     >
       {/* Liquid Layer */}
       <span className="absolute inset-0 w-full h-full transition-all duration-500 ease-out transform translate-y-full bg-[#004d99] group-hover:translate-y-0" />
